@@ -1,0 +1,58 @@
+/* Shigoto UI — コンポーネント単体CSS
+ * ライブラリ未導入でこのCSSのみで業務系UIを再現できるように、
+ * デザイントークン・基本タイポ・共通ユーティリティ・コンポーネント
+ * （ボタン / 入力 / バッジ / テーブル / アラート / 選択部品 等）を
+ * 1ファイルに集約しています。catalog ページ専用の装飾は含みません。
+ */
+
+/* ---------- Design tokens ---------- */
+:root {
+  --ink: #0f172a;
+  --ink-2: #1e293b;
+  --muted: #64748b;
+  --muted-2: #94a3b8;
+  --line: #cbd5e1;
+  --line-2: #e2e8f0;
+  --line-3: #eef2f7;
+  --bg: #f8fafc;
+  --bg-2: #f1f5f9;
+  --bg-3: #f8fafc;
+  --paper: #ffffff;
+  --accent: #1f3a8a;
+  --accent-2: #3b5bdb;
+  --accent-soft: #dbeafe;
+  --accent-softer: #eff4ff;
+  --warn: #b45309;
+  --warn-soft: #fef3c7;
+  --danger: #b91c1c;
+  --danger-soft: #fee2e2;
+  --ok: #166534;
+  --ok-soft: #dcfce7;
+  --info: #0c4a6e;
+  --info-soft: #e0f2fe;
+
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
+  --sans: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, -apple-system, sans-serif;
+
+  --r-sm: 2px; --r-md: 4px; --r-lg: 6px;
+}
+
+/* ---------- Base reset / typography ---------- */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--bg);
+  font-size: 14px;
+  line-height: 1.65;
+  font-feature-settings: "palt";
+}
+a { color: var(--accent); }
+
+/* ---------- Helpers ---------- */
+.row { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
+.col { display: flex; flex-direction: column; gap: 6px; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--mono); }
+.small { font-size: 11px; }
