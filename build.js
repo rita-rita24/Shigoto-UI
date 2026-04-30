@@ -61,6 +61,155 @@
       </article>`;
   }
 
+  /* ---------- Form-control normalization ----------
+   * Catalog markup uses styled <span> elements as visual mock-ups for radios,
+   * checkboxes, toggles, and combo-box dropdowns. To verify behavior in the
+   * browser, replace those mock-ups with real <label> + <input> pairs (and
+   * minimal click behavior for combos) so users can actually interact.
+   */
+  function normalizeFormControls(root) {
+    // ---- Checkboxes: <span class="check[ checked]">…</span> -> <label> + input
+    root.querySelectorAll("span.check").forEach(span => {
+      const isChecked = span.classList.contains("checked");
+      const isMixed = span.classList.contains("check--mixed") ||
+                      span.classList.contains("tree__check--mixed");
+      const label = document.createElement("label");
+      label.className = span.className;
+      label.classList.remove("checked");
+      if (span.style.cssText) label.style.cssText = span.style.cssText;
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.className = "sgt-native";
+      if (isChecked && !isMixed) input.checked = true;
+      while (span.firstChild) label.appendChild(span.firstChild);
+      // CSS draws the check/dash glyph; clear any pre-baked icon markup.
+      const box = label.querySelector(".check__box");
+      if (box && !isMixed) box.innerHTML = "";
+      label.insertBefore(input, label.firstChild);
+      span.replaceWith(label);
+      if (isMixed) {
+        // indeterminate is not reflected by an HTML attribute.
+        input.indeterminate = true;
+      }
+    });
+
+    // ---- Rich checkboxes (already <label>): just inject an input.
+    root.querySelectorAll("label.check-rich").forEach(label => {
+      if (label.querySelector('input[type="checkbox"]')) return;
+      const isChecked = label.classList.contains("checked");
+      label.classList.remove("checked");
+      const box = label.querySelector(".check__box");
+      if (box) box.innerHTML = "";
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.className = "sgt-native";
+      if (isChecked) input.checked = true;
+      label.insertBefore(input, label.firstChild);
+    });
+
+    // ---- Radios: group by parent element so siblings share a name.
+    const radioGroupName = new WeakMap();
+    let radioGroupId = 0;
+    function nameForGroup(parent) {
+      let name = radioGroupName.get(parent);
+      if (!name) {
+        name = "sgt-rg-" + (++radioGroupId);
+        radioGroupName.set(parent, name);
+      }
+      return name;
+    }
+
+    root.querySelectorAll("span.radio").forEach(span => {
+      const isChecked = span.classList.contains("checked");
+      const label = document.createElement("label");
+      label.className = span.className;
+      label.classList.remove("checked");
+      if (span.style.cssText) label.style.cssText = span.style.cssText;
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = nameForGroup(span.parentElement);
+      input.className = "sgt-native";
+      if (isChecked) input.checked = true;
+      while (span.firstChild) label.appendChild(span.firstChild);
+      label.insertBefore(input, label.firstChild);
+      span.replaceWith(label);
+    });
+
+    root.querySelectorAll("label.radio-rich").forEach(label => {
+      if (label.querySelector('input[type="radio"]')) return;
+      const isChecked = label.classList.contains("checked");
+      label.classList.remove("checked");
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = nameForGroup(label.parentElement);
+      input.className = "sgt-native";
+      if (isChecked) input.checked = true;
+      label.insertBefore(input, label.firstChild);
+    });
+
+    // ---- Toggles: <span class="toggle[ on]"></span> -> <input type="checkbox" class="toggle">
+    root.querySelectorAll("span.toggle").forEach(span => {
+      const isOn = span.classList.contains("on");
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.className = "toggle";
+      if (isOn) input.checked = true;
+      if (span.style.cssText) input.style.cssText = span.style.cssText;
+      span.replaceWith(input);
+    });
+  }
+
+  /* ---------- Combobox click behavior ----------
+   * Each <div class="combo"> wraps an <div class="input"> trigger and an
+   * optional <ul class="combo__results"> dropdown. Wire up:
+   *   - clicking the trigger toggles the dropdown
+   *   - clicking a result item updates the trigger label and closes the list
+   *   - clicking outside closes any open dropdown
+   */
+  function bindCombos(root) {
+    const combos = root.querySelectorAll(".combo");
+    combos.forEach(combo => {
+      const trigger = combo.querySelector(":scope > .input");
+      const list = combo.querySelector(":scope > .combo__results");
+      if (!trigger) return;
+      // Track open state. Treat presence of a results list at render time as
+      // "open" demo state — keep it visible until the user toggles.
+      if (list) combo.dataset.open = "true";
+
+      trigger.addEventListener("click", e => {
+        if (trigger.classList.contains("input--disabled")) return;
+        e.stopPropagation();
+        if (!list) return;
+        const open = combo.dataset.open === "true";
+        combo.dataset.open = open ? "false" : "true";
+      });
+
+      if (!list) return;
+      list.querySelectorAll("li").forEach(li => {
+        if (li.classList.contains("combo__group") ||
+            li.classList.contains("combo__results__foot")) return;
+        li.addEventListener("click", e => {
+          e.stopPropagation();
+          list.querySelectorAll("li.sel").forEach(s => s.classList.remove("sel"));
+          li.classList.add("sel");
+          const valueEl = trigger.querySelector(".input__value");
+          if (valueEl) valueEl.textContent = li.textContent.trim();
+          combo.dataset.open = "false";
+        });
+      });
+    });
+
+    // Single document listener: close any open combo on outside click.
+    if (!document.body.dataset.sgtComboBound) {
+      document.body.dataset.sgtComboBound = "1";
+      document.addEventListener("click", e => {
+        document.querySelectorAll('.combo[data-open="true"]').forEach(c => {
+          if (!c.contains(e.target)) c.dataset.open = "false";
+        });
+      });
+    }
+  }
+
   function bindUsageTabs(root) {
     root.querySelectorAll(".usage").forEach(box => {
       const tabs = box.querySelectorAll(".usage__tab");
@@ -125,6 +274,8 @@
       // anchor target the sidenav already points at.
       slot.innerHTML = renderCard(key, c);
     });
+    normalizeFormControls(document);
+    bindCombos(document);
     bindUsageTabs(document);
     bindSearch();
   }
