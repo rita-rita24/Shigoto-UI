@@ -159,10 +159,6 @@ a { color: var(--accent); }
   background: var(--paper);
 }
 .card__title-row { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-.card__id {
-  font-family: var(--mono); font-size: 11px;
-  color: var(--muted); letter-spacing: 0.06em;
-}
 .card__tag {
   font-family: var(--mono); font-size: 13px; color: var(--ink);
   background: var(--bg-2); padding: 2px 6px;
@@ -1442,23 +1438,28 @@ h4.sub {
 /* === sidenav clean (no numbering / no ID badges) === */
 .sidenav--clean a {
   display: block;
-  padding: 6px 10px;
+  padding: 6px 12px;
   font-size: 13px;
-  color: var(--ink);
+  color: var(--ink-2);
   text-decoration: none;
   border-radius: 4px;
+  line-height: 1.5;
 }
-.sidenav--clean a:hover { background: var(--surface-2); }
+.sidenav--clean a:hover { background: var(--bg-2); color: var(--ink); }
 .sidenav--clean h4 {
-  margin: 18px 0 6px;
-  padding: 0 10px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  letter-spacing: .04em;
-  text-transform: uppercase;
+  margin: 24px 0 8px;
+  padding: 8px 12px 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0;
+  text-transform: none;
+  border-top: 1px solid var(--line-2);
+  border-left: 3px solid var(--accent);
+  background: var(--bg-2);
+  border-radius: 0 4px 4px 0;
 }
-.sidenav--clean h4:first-child { margin-top: 0; }
+.sidenav--clean h4:first-child { margin-top: 0; border-top: 0; }
 
 /* === icons / glyph reset for v5 === */
 .row { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }

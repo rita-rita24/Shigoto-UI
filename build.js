@@ -46,7 +46,6 @@
       <article class="card" data-key="${key}">
         <header class="card__head">
           <div class="card__title-row">
-            <div class="card__id mono">${escapeHtml(c.id)}</div>
             <h3 class="card__title">${escapeHtml(c.name)}</h3>
             <code class="card__tag mono">${escapeHtml(c.tag)}</code>
           </div>
