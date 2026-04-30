@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=13" />
+<link rel="stylesheet" href="styles.css?v=14" />
 </head>
 <body>
 
@@ -77,15 +77,20 @@
     <a href="#sort-control">並び替え</a>
     <a href="#bulk-actions">一括操作</a>
 
-    <h4>業務向け部品</h4>
+    <h4>金額・税</h4>
     <a href="#money-input">金額入力</a>
     <a href="#tax">税率選択</a>
+    <a href="#total-amount">合計金額表示</a>
+
+    <h4>連絡先・住所</h4>
     <a href="#postal-input">郵便番号入力</a>
     <a href="#address-input">住所入力</a>
     <a href="#phone-input">電話番号入力</a>
+
+    <h4>日付・カレンダー</h4>
     <a href="#date-input">日付入力</a>
-    <a href="#status">ステータス表示</a>
-    <a href="#total-amount">合計金額表示</a>
+    <a href="#biz-calendar">営業日カレンダー</a>
+    <a href="#closing-day">締め日選択</a>
 
     <h4>帳票・申請ヘッダー</h4>
     <a href="#invoice-header">請求書ヘッダー</a>
@@ -117,6 +122,7 @@
     <a href="#autocomplete">オートコンプリート</a>
 
     <h4>状態・通知</h4>
+    <a href="#status">ステータス表示</a>
     <a href="#tooltip">ツールチップ</a>
     <a href="#spinner">スピナー</a>
     <a href="#skeleton">スケルトン表示</a>
@@ -128,9 +134,7 @@
     <a href="#perm-matrix">権限マトリクス</a>
     <a href="#audit-list">監査ログ一覧</a>
 
-    <h4>業務向け部品（追加）</h4>
-    <a href="#biz-calendar">営業日カレンダー</a>
-    <a href="#closing-day">締め日選択</a>
+    <h4>金融・登記・印影</h4>
     <a href="#bank-account">銀行口座入力</a>
     <a href="#corp-number">法人番号入力</a>
     <a href="#seal">印影プレースホルダー</a>
@@ -209,17 +213,32 @@
 
     <section class="section" id="money-input">
       <header class="section__head">
-        <h2 class="section__title">業務向け部品</h2>
-        <p class="section__lede">金額・税率・郵便・住所・電話・日付——日本の業務入力で必ず手戻りする項目を、Web Component 1つずつに切り出す。</p>
+        <h2 class="section__title">金額・税</h2>
+        <p class="section__lede">¥プレフィクス・カンマ自動・全角→半角・税率別小計・税込／税抜の切替。日本の金額入力で必ず手戻りする項目を1部品で吸収。</p>
       </header>
       <div data-component="money-input"></div>
       <div data-component="tax" id="tax"></div>
-      <div data-component="postal-input" id="postal-input"></div>
+      <div data-component="total-amount" id="total-amount"></div>
+    </section>
+
+    <section class="section" id="postal-input">
+      <header class="section__head">
+        <h2 class="section__title">連絡先・住所</h2>
+        <p class="section__lede">郵便番号 → 住所自動補完、ハイフン正規化、固定／携帯／FAX 種別判定。日本の連絡先まわりを通貫でカバー。</p>
+      </header>
+      <div data-component="postal-input"></div>
       <div data-component="address-input" id="address-input"></div>
       <div data-component="phone-input" id="phone-input"></div>
-      <div data-component="date-input" id="date-input"></div>
-      <div data-component="status" id="status"></div>
-      <div data-component="total-amount" id="total-amount"></div>
+    </section>
+
+    <section class="section" id="date-input">
+      <header class="section__head">
+        <h2 class="section__title">日付・カレンダー</h2>
+        <p class="section__lede">和暦・年度・営業日換算・締め日。海外UIでは取りこぼされがちな日本固有の日付ロジックを内蔵する。</p>
+      </header>
+      <div data-component="date-input"></div>
+      <div data-component="biz-calendar" id="biz-calendar"></div>
+      <div data-component="closing-day" id="closing-day"></div>
     </section>
 
     <section class="section" id="invoice-header">
@@ -285,12 +304,13 @@
       <div data-component="autocomplete" id="autocomplete"></div>
     </section>
 
-    <section class="section" id="tooltip">
+    <section class="section" id="status">
       <header class="section__head">
         <h2 class="section__title">状態・通知</h2>
-        <p class="section__lede">「待っている」「補足する」「知らせる」のための部品群。ツールチップ・スピナー・スケルトン・バナー・トーストを 1 セットで揃える。</p>
+        <p class="section__lede">「いまどうなっているか」「待っている」「補足する」「知らせる」のための部品群。ステータス表示・ツールチップ・スピナー・スケルトン・バナー・トーストを 1 セットで揃える。</p>
       </header>
-      <div data-component="tooltip"></div>
+      <div data-component="status"></div>
+      <div data-component="tooltip" id="tooltip"></div>
       <div data-component="spinner" id="spinner"></div>
       <div data-component="skeleton" id="skeleton"></div>
       <div data-component="banner" id="banner"></div>
@@ -307,14 +327,12 @@
       <div data-component="audit-list" id="audit-list"></div>
     </section>
 
-    <section class="section" id="biz-calendar">
+    <section class="section" id="bank-account">
       <header class="section__head">
-        <h2 class="section__title">業務向け部品（追加）</h2>
-        <p class="section__lede">日本の業務UIに不可欠の固有概念。営業日換算・締日と支払サイト・全銀フォーマット・法人番号・印影。一般的な部品ライブラリでは取りこぼされる領域。</p>
+        <h2 class="section__title">金融・登記・印影</h2>
+        <p class="section__lede">全銀フォーマットの銀行口座、T+13桁の法人番号、印影プレースホルダー。一般的なUIライブラリでは取りこぼされる、日本の金融・契約書面ならではの部品。</p>
       </header>
-      <div data-component="biz-calendar"></div>
-      <div data-component="closing-day" id="closing-day"></div>
-      <div data-component="bank-account" id="bank-account"></div>
+      <div data-component="bank-account"></div>
       <div data-component="corp-number" id="corp-number"></div>
       <div data-component="seal" id="seal"></div>
     </section>
@@ -325,9 +343,9 @@
   </main>
 </div>
 
-<script src="icons.js?v=13"></script>
-<script src="usage.js?v=13"></script>
-<script src="cards.js?v=13"></script>
+<script src="icons.js?v=14"></script>
+<script src="usage.js?v=14"></script>
+<script src="cards.js?v=14"></script>
 <script>
   /* Replace [data-icon] placeholders with SVG markup once cards are ready */
   document.addEventListener('DOMContentLoaded', () => {
@@ -339,7 +357,7 @@
     }, 0);
   });
 </script>
-<script src="build.js?v=13"></script>
+<script src="build.js?v=14"></script>
 
 </body>
 </html>
