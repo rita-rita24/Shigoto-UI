@@ -208,7 +208,112 @@ const ICON = {
   "chevrons-left":  `<svg ${ICON_BASE}><polyline points="11,3 7,8 11,13"/><polyline points="7,3 3,8 7,13"/></svg>`,
   "chevrons-right": `<svg ${ICON_BASE}><polyline points="5,3 9,8 5,13"/><polyline points="9,3 13,8 9,13"/></svg>`,
   "log-in":         `<svg ${ICON_BASE}><path d="M9 3h3.5v10H9"/><polyline points="6,5 9,8 6,11"/><line x1="9" y1="8" x2="2" y2="8"/></svg>`,
-  "log-out":        `<svg ${ICON_BASE}><path d="M7 3H3.5v10H7"/><polyline points="11,5 14,8 11,11"/><line x1="14" y1="8" x2="6" y2="8"/></svg>`
+  "log-out":        `<svg ${ICON_BASE}><path d="M7 3H3.5v10H7"/><polyline points="11,5 14,8 11,11"/><line x1="14" y1="8" x2="6" y2="8"/></svg>`,
+
+  /* ===== フォーム部品（補助） ===== */
+  circle:           `<svg ${ICON_BASE}><circle cx="8" cy="8" r="5.5"/></svg>`,
+  "circle-dot":     `<svg ${ICON_BASE}><circle cx="8" cy="8" r="5.5"/><circle cx="8" cy="8" r="2" fill="currentColor" stroke="none"/></svg>`,
+  square:           `<svg ${ICON_BASE}><rect x="3" y="3" width="10" height="10" rx="0.5"/></svg>`,
+  "check-square":   `<svg ${ICON_BASE}><rect x="3" y="3" width="10" height="10" rx="0.5"/><polyline points="5.5,8 7.5,10 11,6.5"/></svg>`,
+  "x-square":       `<svg ${ICON_BASE}><rect x="3" y="3" width="10" height="10" rx="0.5"/><line x1="6" y1="6" x2="10" y2="10"/><line x1="10" y1="6" x2="6" y2="10"/></svg>`,
+  "toggle-on":      `<svg ${ICON_BASE}><rect x="2" y="5.5" width="12" height="5" rx="2.5"/><circle cx="11" cy="8" r="1.7" fill="currentColor" stroke="none"/></svg>`,
+  "toggle-off":     `<svg ${ICON_BASE}><rect x="2" y="5.5" width="12" height="5" rx="2.5"/><circle cx="5" cy="8" r="1.7"/></svg>`,
+  "minus-circle":   `<svg ${ICON_BASE}><circle cx="8" cy="8" r="6"/><line x1="5" y1="8" x2="11" y2="8"/></svg>`,
+  "plus-circle":    `<svg ${ICON_BASE}><circle cx="8" cy="8" r="6"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="8" y1="5" x2="8" y2="11"/></svg>`,
+  slash:            `<svg ${ICON_BASE}><line x1="4" y1="13" x2="12" y2="3"/></svg>`,
+
+  /* ===== ドキュメント・編集 ===== */
+  clipboard:        `<svg ${ICON_BASE}><rect x="3.5" y="3" width="9" height="11" rx="0.5"/><rect x="6" y="2" width="4" height="2.5" rx="0.5"/></svg>`,
+  "clipboard-check": `<svg ${ICON_BASE}><rect x="3.5" y="3" width="9" height="11" rx="0.5"/><rect x="6" y="2" width="4" height="2.5" rx="0.5"/><polyline points="6,9 7.5,10.5 10.5,7.5"/></svg>`,
+  "clipboard-copy": `<svg ${ICON_BASE}><rect x="3.5" y="3" width="9" height="11" rx="0.5"/><rect x="6" y="2" width="4" height="2.5" rx="0.5"/><rect x="6" y="7.5" width="5" height="4" rx="0.5"/></svg>`,
+  "clipboard-x":    `<svg ${ICON_BASE}><rect x="3.5" y="3" width="9" height="11" rx="0.5"/><rect x="6" y="2" width="4" height="2.5" rx="0.5"/><line x1="6.5" y1="8" x2="9.5" y2="11"/><line x1="9.5" y1="8" x2="6.5" y2="11"/></svg>`,
+  "file-check":     `<svg ${ICON_BASE}><path d="M4 2h5.5L13 5.5V14H4z"/><polyline points="9,2 9,6 13,6"/><polyline points="5.5,11 7,12.5 10,9.5"/></svg>`,
+  "file-x":         `<svg ${ICON_BASE}><path d="M4 2h5.5L13 5.5V14H4z"/><polyline points="9,2 9,6 13,6"/><line x1="6.5" y1="9" x2="10.5" y2="13"/><line x1="10.5" y1="9" x2="6.5" y2="13"/></svg>`,
+  "file-search":    `<svg ${ICON_BASE}><path d="M4 2h5.5L13 5.5V11H4z"/><polyline points="9,2 9,6 13,6"/><circle cx="9" cy="11" r="2"/><line x1="10.5" y1="12.5" x2="13" y2="14.5"/></svg>`,
+  highlighter:      `<svg ${ICON_BASE}><path d="M5 11l-2 3h4l-1-2"/><path d="M5 11l5-5 3 3-5 5z"/><line x1="9" y1="5" x2="13" y2="9"/></svg>`,
+  eraser:           `<svg ${ICON_BASE}><path d="M5 13l-2-2 7-7 4 4-5 5z"/><line x1="3" y1="13.5" x2="13" y2="13.5"/><line x1="6.5" y1="6.5" x2="10.5" y2="10.5"/></svg>`,
+  scissors:         `<svg ${ICON_BASE}><circle cx="4" cy="5" r="1.8"/><circle cx="4" cy="11" r="1.8"/><line x1="5.5" y1="6" x2="13" y2="13"/><line x1="5.5" y1="10" x2="13" y2="3"/></svg>`,
+
+  /* ===== チャート・データ ===== */
+  "chart-line":     `<svg ${ICON_BASE}><line x1="2.5" y1="13" x2="13.5" y2="13"/><polyline points="3,11 6,7.5 8.5,9.5 13,4"/></svg>`,
+  "chart-pie":      `<svg ${ICON_BASE}><path d="M8 2.5a5.5 5.5 0 1 0 5.5 5.5H8z"/><path d="M9.5 2.5a4 4 0 0 1 4 4h-4z"/></svg>`,
+  "chart-area":     `<svg ${ICON_BASE}><line x1="2.5" y1="13" x2="13.5" y2="13"/><polygon points="3,13 3,11 6,7.5 8.5,9.5 13,4 13,13"/></svg>`,
+  "chart-donut":    `<svg ${ICON_BASE}><circle cx="8" cy="8" r="5.5"/><circle cx="8" cy="8" r="2.5"/><path d="M8 2.5a5.5 5.5 0 0 1 5.5 5.5H8z"/></svg>`,
+  gauge:            `<svg ${ICON_BASE}><path d="M2.5 10.5a5.5 5.5 0 0 1 11 0"/><line x1="8" y1="10.5" x2="11" y2="6"/><circle cx="8" cy="10.5" r="0.8" fill="currentColor" stroke="none"/></svg>`,
+  activity:         `<svg ${ICON_BASE}><polyline points="2,8 5,8 6.5,4 9,12 10.5,8 14,8"/></svg>`,
+  "trending-down":  `<svg ${ICON_BASE}><polyline points="2.5,5 6,8.5 8.5,6 13,10.5"/><polyline points="9.5,10.5 13,10.5 13,7"/></svg>`,
+  sigma:            `<svg ${ICON_BASE}><polyline points="3.5,3 12.5,3 8,8 12.5,13 3.5,13"/></svg>`,
+
+  /* ===== 時間 ===== */
+  timer:            `<svg ${ICON_BASE}><circle cx="8" cy="9" r="5"/><line x1="6.5" y1="2.5" x2="9.5" y2="2.5"/><line x1="8" y1="2.5" x2="8" y2="4"/><polyline points="8,6 8,9 10,10"/></svg>`,
+  hourglass:        `<svg ${ICON_BASE}><line x1="4" y1="2.5" x2="12" y2="2.5"/><line x1="4" y1="13.5" x2="12" y2="13.5"/><path d="M5 2.5v2c0 1.5 3 2.5 3 3.5 0 1-3 2-3 3.5v2"/><path d="M11 2.5v2c0 1.5-3 2.5-3 3.5 0 1 3 2 3 3.5v2"/></svg>`,
+  alarm:            `<svg ${ICON_BASE}><circle cx="8" cy="9" r="5"/><polyline points="8,6.5 8,9 10,10"/><line x1="3.5" y1="3" x2="5" y2="4.5"/><line x1="12.5" y1="3" x2="11" y2="4.5"/></svg>`,
+  "calendar-check": `<svg ${ICON_BASE}><rect x="2.5" y="3.5" width="11" height="10" rx="1"/><line x1="2.5" y1="6.5" x2="13.5" y2="6.5"/><line x1="5.5" y1="2.5" x2="5.5" y2="4.5"/><line x1="10.5" y1="2.5" x2="10.5" y2="4.5"/><polyline points="5.5,10 7,11.5 10.5,8.5"/></svg>`,
+  "calendar-x":     `<svg ${ICON_BASE}><rect x="2.5" y="3.5" width="11" height="10" rx="1"/><line x1="2.5" y1="6.5" x2="13.5" y2="6.5"/><line x1="5.5" y1="2.5" x2="5.5" y2="4.5"/><line x1="10.5" y1="2.5" x2="10.5" y2="4.5"/><line x1="6" y1="9" x2="10" y2="12"/><line x1="10" y1="9" x2="6" y2="12"/></svg>`,
+  "calendar-plus":  `<svg ${ICON_BASE}><rect x="2.5" y="3.5" width="11" height="10" rx="1"/><line x1="2.5" y1="6.5" x2="13.5" y2="6.5"/><line x1="5.5" y1="2.5" x2="5.5" y2="4.5"/><line x1="10.5" y1="2.5" x2="10.5" y2="4.5"/><line x1="8" y1="8" x2="8" y2="12"/><line x1="6" y1="10" x2="10" y2="10"/></svg>`,
+  "calendar-clock": `<svg ${ICON_BASE}><path d="M2.5 6.5h11"/><path d="M2.5 7v6.5h6"/><path d="M13.5 4.5v3"/><line x1="2.5" y1="6.5" x2="2.5" y2="4.5"/><line x1="2.5" y1="4.5" x2="13.5" y2="4.5"/><line x1="5.5" y1="2.5" x2="5.5" y2="4.5"/><line x1="10.5" y1="2.5" x2="10.5" y2="4.5"/><circle cx="11.5" cy="11" r="2.5"/><polyline points="11.5,9.5 11.5,11 12.5,11.5"/></svg>`,
+
+  /* ===== ナビゲーション（斜め・コーナー） ===== */
+  "arrow-up-right":   `<svg ${ICON_BASE}><line x1="4" y1="12" x2="12" y2="4"/><polyline points="6,4 12,4 12,10"/></svg>`,
+  "arrow-down-right": `<svg ${ICON_BASE}><line x1="4" y1="4" x2="12" y2="12"/><polyline points="12,6 12,12 6,12"/></svg>`,
+  "arrow-up-left":    `<svg ${ICON_BASE}><line x1="12" y1="12" x2="4" y2="4"/><polyline points="10,4 4,4 4,10"/></svg>`,
+  "arrow-down-left":  `<svg ${ICON_BASE}><line x1="12" y1="4" x2="4" y2="12"/><polyline points="4,6 4,12 10,12"/></svg>`,
+  "corner-up-right":  `<svg ${ICON_BASE}><polyline points="9,4 13,4 13,8"/><path d="M13 4l-7 7H3"/></svg>`,
+  "corner-down-right": `<svg ${ICON_BASE}><polyline points="9,12 13,12 13,8"/><path d="M13 12l-7-7H3"/></svg>`,
+  "corner-up-left":   `<svg ${ICON_BASE}><polyline points="7,4 3,4 3,8"/><path d="M3 4l7 7h3"/></svg>`,
+  "corner-down-left": `<svg ${ICON_BASE}><polyline points="7,12 3,12 3,8"/><path d="M3 12l7-7h3"/></svg>`,
+
+  /* ===== レイアウト・パネル ===== */
+  columns:           `<svg ${ICON_BASE}><rect x="2.5" y="3" width="11" height="10"/><line x1="8" y1="3" x2="8" y2="13"/></svg>`,
+  rows:              `<svg ${ICON_BASE}><rect x="2.5" y="3" width="11" height="10"/><line x1="2.5" y1="8" x2="13.5" y2="8"/></svg>`,
+  "panel-left":      `<svg ${ICON_BASE}><rect x="2.5" y="3" width="11" height="10"/><line x1="6.5" y1="3" x2="6.5" y2="13"/></svg>`,
+  "panel-right":     `<svg ${ICON_BASE}><rect x="2.5" y="3" width="11" height="10"/><line x1="9.5" y1="3" x2="9.5" y2="13"/></svg>`,
+  "panel-top":       `<svg ${ICON_BASE}><rect x="2.5" y="3" width="11" height="10"/><line x1="2.5" y1="7" x2="13.5" y2="7"/></svg>`,
+  "panel-bottom":    `<svg ${ICON_BASE}><rect x="2.5" y="3" width="11" height="10"/><line x1="2.5" y1="9.5" x2="13.5" y2="9.5"/></svg>`,
+  sidebar:           `<svg ${ICON_BASE}><rect x="2.5" y="3" width="11" height="10"/><line x1="6.5" y1="3" x2="6.5" y2="13"/><line x1="4" y1="6" x2="5" y2="6"/><line x1="4" y1="8" x2="5" y2="8"/><line x1="4" y1="10" x2="5" y2="10"/></svg>`,
+  "layout-grid":     `<svg ${ICON_BASE}><rect x="2.5" y="3" width="4.5" height="4.5"/><rect x="9" y="3" width="4.5" height="4.5"/><rect x="2.5" y="9" width="4.5" height="4"/><rect x="9" y="9" width="4.5" height="4"/></svg>`,
+
+  /* ===== 業務固有（追加） ===== */
+  receipt:           `<svg ${ICON_BASE}><path d="M3.5 2v12l1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5V2z"/><line x1="5.5" y1="5.5" x2="10.5" y2="5.5"/><line x1="5.5" y1="8" x2="10.5" y2="8"/><line x1="5.5" y1="10.5" x2="9" y2="10.5"/></svg>`,
+  stamp:             `<svg ${ICON_BASE}><circle cx="8" cy="6" r="3"/><line x1="2.5" y1="13.5" x2="13.5" y2="13.5"/><path d="M5.5 9c-1 0.5-2.5 1-2.5 2.5h10c0-1.5-1.5-2-2.5-2.5"/></svg>`,
+  notebook:          `<svg ${ICON_BASE}><rect x="3" y="2.5" width="10" height="11" rx="0.5"/><line x1="6" y1="2.5" x2="6" y2="13.5"/><line x1="8" y1="5" x2="11" y2="5"/><line x1="8" y1="7.5" x2="11" y2="7.5"/><line x1="8" y1="10" x2="10" y2="10"/></svg>`,
+  book:              `<svg ${ICON_BASE}><path d="M3 3.5v9.5a1 1 0 0 1 1-1h9V2.5h-9a1 1 0 0 0-1 1z"/><line x1="13" y1="12" x2="13" y2="13.5"/><line x1="4" y1="13.5" x2="13" y2="13.5"/></svg>`,
+  signature:         `<svg ${ICON_BASE}><path d="M2.5 11c2-3 4-3 5 0s3 3 5 0"/><path d="M2 13.5c5-1 9-1 12 0"/></svg>`,
+  ledger:            `<svg ${ICON_BASE}><rect x="2.5" y="3" width="11" height="10" rx="0.5"/><line x1="8" y1="3" x2="8" y2="13"/><line x1="2.5" y1="6" x2="13.5" y2="6"/><line x1="2.5" y1="9" x2="13.5" y2="9"/></svg>`,
+  "bookmark-check":  `<svg ${ICON_BASE}><path d="M4 2.5v11l4-3 4 3v-11z"/><polyline points="6,7 7.5,8.5 10,5.5"/></svg>`,
+  "bookmark-plus":   `<svg ${ICON_BASE}><path d="M4 2.5v11l4-3 4 3v-11z"/><line x1="8" y1="5.5" x2="8" y2="9"/><line x1="6" y1="7" x2="10" y2="7"/></svg>`,
+
+  /* ===== コミュニケーション（追加） ===== */
+  "inbox-arrow-down": `<svg ${ICON_BASE}><path d="M2 9.5L4 4h8l2 5.5V13H2z"/><polyline points="2,9.5 6,9.5 7,11 9,11 10,9.5 14,9.5"/><line x1="8" y1="2" x2="8" y2="7"/><polyline points="6,5 8,7 10,5"/></svg>`,
+  "inbox-plus":      `<svg ${ICON_BASE}><path d="M2 9.5L4 4h8l2 5.5V13H2z"/><polyline points="2,9.5 6,9.5 7,11 9,11 10,9.5 14,9.5"/><line x1="11" y1="2.5" x2="11" y2="6.5"/><line x1="9" y1="4.5" x2="13" y2="4.5"/></svg>`,
+  "mail-check":      `<svg ${ICON_BASE}><path d="M2 4.5h12V11H2z" /><polyline points="2.5,5 8,9 13.5,5"/><polyline points="9,13 10.5,14.5 14,11"/></svg>`,
+  "mail-x":          `<svg ${ICON_BASE}><path d="M2 4.5h12V10H2z"/><polyline points="2.5,5 8,9 13.5,5"/><line x1="9" y1="11" x2="14" y2="14"/><line x1="14" y1="11" x2="9" y2="14"/></svg>`,
+  "bell-plus":       `<svg ${ICON_BASE}><path d="M4 11V8a4 4 0 0 1 8 0v3l1.2 1.2H2.8z"/><path d="M6.5 13.2a1.5 1.5 0 0 0 3 0"/><line x1="11.5" y1="2" x2="11.5" y2="5"/><line x1="10" y1="3.5" x2="13" y2="3.5"/></svg>`,
+
+  /* ===== 表示・操作（追加） ===== */
+  maximize:          `<svg ${ICON_BASE}><polyline points="3,6.5 3,3 6.5,3"/><polyline points="9.5,3 13,3 13,6.5"/><polyline points="13,9.5 13,13 9.5,13"/><polyline points="6.5,13 3,13 3,9.5"/></svg>`,
+  minimize:          `<svg ${ICON_BASE}><polyline points="6.5,3 6.5,6.5 3,6.5"/><polyline points="9.5,6.5 13,6.5 13,3"/><polyline points="13,9.5 9.5,9.5 9.5,13"/><polyline points="3,9.5 6.5,9.5 6.5,13"/></svg>`,
+  focus:             `<svg ${ICON_BASE}><circle cx="8" cy="8" r="2"/><line x1="8" y1="2" x2="8" y2="4"/><line x1="8" y1="12" x2="8" y2="14"/><line x1="2" y1="8" x2="4" y2="8"/><line x1="12" y1="8" x2="14" y2="8"/></svg>`,
+  "scan-line":       `<svg ${ICON_BASE}><polyline points="3,5 3,3 5,3"/><polyline points="11,3 13,3 13,5"/><polyline points="13,11 13,13 11,13"/><polyline points="5,13 3,13 3,11"/><line x1="3.5" y1="8" x2="12.5" y2="8"/></svg>`,
+  sliders:           `<svg ${ICON_BASE}><line x1="3" y1="5" x2="13" y2="5"/><line x1="3" y1="11" x2="13" y2="11"/><circle cx="6" cy="5" r="1.5"/><circle cx="11" cy="11" r="1.5"/></svg>`,
+  ruler:             `<svg ${ICON_BASE}><rect x="2" y="6" width="12" height="4" transform="rotate(-25 8 8)"/><line x1="5.5" y1="6.5" x2="6" y2="7.5"/><line x1="7" y1="5.5" x2="8" y2="7"/><line x1="8.5" y1="4.5" x2="9" y2="5.5"/><line x1="10" y1="3.5" x2="11" y2="5"/></svg>`,
+  crop:              `<svg ${ICON_BASE}><polyline points="4.5,2 4.5,11.5 14,11.5"/><polyline points="2,4.5 11.5,4.5 11.5,14"/></svg>`,
+  "rotate-cw":       `<svg ${ICON_BASE}><polyline points="13,3.5 13,6 10.5,6"/><path d="M13 6a5.5 5.5 0 1 0-1.5 5.5"/></svg>`,
+  "rotate-ccw":      `<svg ${ICON_BASE}><polyline points="3,3.5 3,6 5.5,6"/><path d="M3 6a5.5 5.5 0 1 1 1.5 5.5"/></svg>`,
+  magnet:            `<svg ${ICON_BASE}><path d="M3.5 2.5v6a4.5 4.5 0 0 0 9 0v-6"/><line x1="3.5" y1="5.5" x2="6.5" y2="5.5"/><line x1="9.5" y1="5.5" x2="12.5" y2="5.5"/></svg>`,
+
+  /* ===== フィルタ・ラベル ===== */
+  "filter-x":        `<svg ${ICON_BASE}><path d="M2.5 3 L13.5 3 L9.5 8 L9.5 11 L6.5 12.5 L6.5 8 Z"/><line x1="11" y1="11" x2="14" y2="14"/><line x1="14" y1="11" x2="11" y2="14"/></svg>`,
+  "tag-plus":        `<svg ${ICON_BASE}><path d="M2.5 6.5V2.5h4l5 5-4 4z"/><circle cx="5" cy="5" r="0.7"/><line x1="11.5" y1="10.5" x2="11.5" y2="14"/><line x1="9.8" y1="12.2" x2="13.2" y2="12.2"/></svg>`,
+  "tag-x":           `<svg ${ICON_BASE}><path d="M2.5 6.5V2.5h4l4.5 4.5-4 4z"/><circle cx="5" cy="5" r="0.7"/><line x1="10" y1="11" x2="13" y2="14"/><line x1="13" y1="11" x2="10" y2="14"/></svg>`,
+  "bookmark-x":      `<svg ${ICON_BASE}><path d="M4 2.5v11l4-3 4 3v-11z"/><line x1="6.5" y1="5.5" x2="9.5" y2="8.5"/><line x1="9.5" y1="5.5" x2="6.5" y2="8.5"/></svg>`,
+  "pin-off":         `<svg ${ICON_BASE}><path d="M9.5 2.5l4 4-1 1-1.5-0.5-1.5 1.5"/><path d="M7.5 6.5l-1.5 1.5 0.5 1.5-1 1-4-4 1-1 1.5 0.5"/><line x1="6" y1="10" x2="2.5" y2="13.5"/><line x1="2" y1="2" x2="14" y2="14"/></svg>`,
+
+  /* ===== 通貨 ===== */
+  dollar:            `<svg ${ICON_BASE}><line x1="8" y1="2" x2="8" y2="14"/><path d="M11 4.5H6.5a1.8 1.8 0 0 0 0 3.5h3a1.8 1.8 0 0 1 0 3.5H5"/></svg>`,
+  euro:              `<svg ${ICON_BASE}><path d="M12 4.5a4.5 4.5 0 1 0 0 7"/><line x1="3" y1="7" x2="9" y2="7"/><line x1="3" y1="9.5" x2="9" y2="9.5"/></svg>`,
+  pound:             `<svg ${ICON_BASE}><path d="M11.5 4.5a3 3 0 0 0-6 0v3.5h-2"/><path d="M3.5 8H10"/><path d="M3.5 13.5h9"/><path d="M5.5 8v2c0 1.5-1 2.5-2 3.5"/></svg>`,
+  bitcoin:           `<svg ${ICON_BASE}><circle cx="8" cy="8" r="6"/><path d="M6 5.5h3a1.5 1.5 0 0 1 0 3H6m0 0h3.5a1.5 1.5 0 0 1 0 3H6V5.5"/><line x1="7.5" y1="3.5" x2="7.5" y2="5.5"/><line x1="9" y1="3.5" x2="9" y2="5.5"/><line x1="7.5" y1="11.5" x2="7.5" y2="13"/><line x1="9" y1="11.5" x2="9" y2="13"/></svg>`
 };
 
 /* Ordered grouping for the icons page. Keep order consistent with the
@@ -234,7 +339,18 @@ const ICON_GROUPS = [
   { id: "symbols",  label: "数学・記号",            names: ["percent", "hash", "at-sign", "asterisk", "divide", "equal", "bolt", "code", "terminal"] },
   { id: "biz2",     label: "ビジネス雑貨",          names: ["briefcase", "shopping-cart", "gift", "award", "trophy", "target", "compass", "map-pin", "pin", "key", "shield", "shield-check"] },
   { id: "theme",    label: "装飾・テーマ",          names: ["moon", "sun", "scan", "qr", "palette"] },
-  { id: "nav2",     label: "ナビ拡張",              names: ["chevrons-down", "chevrons-up", "chevrons-left", "chevrons-right", "log-in", "log-out"] }
+  { id: "nav2",     label: "ナビ拡張",              names: ["chevrons-down", "chevrons-up", "chevrons-left", "chevrons-right", "log-in", "log-out"] },
+  { id: "form2",    label: "フォーム部品（補助）",  names: ["circle", "circle-dot", "square", "check-square", "x-square", "toggle-on", "toggle-off", "minus-circle", "plus-circle", "slash"] },
+  { id: "doc",      label: "ドキュメント・編集",    names: ["clipboard", "clipboard-check", "clipboard-copy", "clipboard-x", "file-check", "file-x", "file-search", "highlighter", "eraser", "scissors"] },
+  { id: "data",     label: "チャート・データ",      names: ["chart-line", "chart-pie", "chart-area", "chart-donut", "gauge", "activity", "trending-down", "sigma"] },
+  { id: "time",     label: "時間",                  names: ["timer", "hourglass", "alarm", "calendar-check", "calendar-x", "calendar-plus", "calendar-clock"] },
+  { id: "nav3",     label: "ナビ斜め・コーナー",    names: ["arrow-up-right", "arrow-down-right", "arrow-up-left", "arrow-down-left", "corner-up-right", "corner-down-right", "corner-up-left", "corner-down-left"] },
+  { id: "layout",   label: "レイアウト・パネル",    names: ["columns", "rows", "panel-left", "panel-right", "panel-top", "panel-bottom", "sidebar", "layout-grid"] },
+  { id: "biz3",     label: "業務固有（追加）",      names: ["receipt", "stamp", "notebook", "book", "signature", "ledger", "bookmark-check", "bookmark-plus"] },
+  { id: "comms2",   label: "通信（追加）",          names: ["inbox-arrow-down", "inbox-plus", "mail-check", "mail-x", "bell-plus"] },
+  { id: "ops",      label: "表示・操作（追加）",    names: ["maximize", "minimize", "focus", "scan-line", "sliders", "ruler", "crop", "rotate-cw", "rotate-ccw", "magnet"] },
+  { id: "label",    label: "フィルタ・ラベル",      names: ["filter-x", "tag-plus", "tag-x", "bookmark-x", "pin-off"] },
+  { id: "currency", label: "通貨",                  names: ["dollar", "euro", "pound", "bitcoin"] }
 ];
 
 window.ICON = ICON;
