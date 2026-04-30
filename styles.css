@@ -1,47 +1,5 @@
 /* Shigoto UI — Catalog v2 (デジタル庁系 only) */
-:root {
-  --ink: #0f172a;
-  --ink-2: #1e293b;
-  --muted: #64748b;
-  --muted-2: #94a3b8;
-  --line: #cbd5e1;
-  --line-2: #e2e8f0;
-  --line-3: #eef2f7;
-  --bg: #f8fafc;
-  --bg-2: #f1f5f9;
-  --bg-3: #f8fafc;
-  --paper: #ffffff;
-  --accent: #1f3a8a;
-  --accent-2: #3b5bdb;
-  --accent-soft: #dbeafe;
-  --accent-softer: #eff4ff;
-  --warn: #b45309;
-  --warn-soft: #fef3c7;
-  --danger: #b91c1c;
-  --danger-soft: #fee2e2;
-  --ok: #166534;
-  --ok-soft: #dcfce7;
-  --info: #0c4a6e;
-  --info-soft: #e0f2fe;
-
-  --mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
-  --sans: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, -apple-system, sans-serif;
-
-  --r-sm: 2px; --r-md: 4px; --r-lg: 6px;
-}
-
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  font-family: var(--sans);
-  color: var(--ink);
-  background: var(--bg);
-  font-size: 14px;
-  line-height: 1.65;
-  font-feature-settings: "palt";
-}
-
-a { color: var(--accent); }
+@import url("shigoto-ui.css?v=8");
 
 /* ---------- Top chrome ---------- */
 .app-header {
@@ -681,11 +639,6 @@ kbd {
 }
 
 /* ---------- helpers ---------- */
-.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.col { display: flex; flex-direction: column; gap: 8px; }
-.muted { color: var(--muted); }
-.mono { font-family: var(--mono); }
-.small { font-size: 11px; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
 /* ---------- MVP ---------- */
@@ -1462,8 +1415,6 @@ h4.sub {
 .sidenav--clean h4:first-child { margin-top: 0; border-top: 0; }
 
 /* === icons / glyph reset for v5 === */
-.row { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
-.col { display: flex; flex-direction: column; gap: 6px; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .sub { font-size: 13px; font-weight: 600; color: var(--muted); margin: 0 0 8px; }
 
