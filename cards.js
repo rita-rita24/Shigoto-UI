@@ -84,7 +84,7 @@ const CARDS = {
     accept: "受入: `sgt:postal-resolved` を受け取ると 都道府県/市区町村/町名 を自動で埋め、建物名にフォーカスを移す。",
     body: `
       <div class="variant__stage" style="border-style: solid; border-color: var(--line);">
-        <div style="display: grid; grid-template-columns: 160px 1fr 1fr; gap: 12px;">
+        <div class="form-grid form-grid--label-1col">
           <div class="field"><label class="field__label">都道府県</label>
             <div class="input"><span class="input__value">東京都</span><span class="input__suffix mono">▾</span></div></div>
           <div class="field"><label class="field__label">市区町村</label>
@@ -130,7 +130,7 @@ const CARDS = {
     accept: "受入: 「佐藤 花子」と入力 → ふりがな欄に「サトウ ハナコ」を提案（ユーザは編集可能）。",
     body: `
       <div class="variant__stage" style="border-style: solid;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-grid form-grid--2">
           <div class="field"><label class="field__label">姓 <span class="req">必須</span></label>
             <div class="input"><span class="input__value">佐藤</span></div></div>
           <div class="field"><label class="field__label">名 <span class="req">必須</span></label>
@@ -148,7 +148,7 @@ const CARDS = {
     accept: "受入: 名義カナに小書き文字（ァィゥェォ等）が含まれる場合は警告を発火。",
     body: `
       <div class="variant__stage" style="border-style: solid;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px;">
+        <div class="form-grid form-grid--4">
           <div class="field"><label class="field__label">金融機関</label>
             <div class="input"><span class="input__value mono">0001</span><span class="input__suffix">みずほ銀行</span></div></div>
           <div class="field"><label class="field__label">支店</label>

@@ -287,7 +287,7 @@
   }
 
   /* ---------- Combobox click behavior ----------
-   * Each <div class="combo"> wraps an <div class="input"> trigger and an
+   * Each <div class="combo"> wraps a trigger (.input or .search) and an
    * optional <ul class="combo__results"> dropdown. Wire up:
    *   - clicking the trigger toggles the dropdown
    *   - clicking a result item updates the trigger label and closes the list
@@ -296,7 +296,7 @@
   function bindCombos(root) {
     const combos = root.querySelectorAll(".combo");
     combos.forEach(combo => {
-      const trigger = combo.querySelector(":scope > .input");
+      const trigger = combo.querySelector(":scope > .input, :scope > .search");
       const list = combo.querySelector(":scope > .combo__results");
       if (!trigger) return;
       // Track open state. Treat presence of a results list at render time as
@@ -305,6 +305,9 @@
 
       trigger.addEventListener("click", e => {
         if (trigger.classList.contains("input--disabled")) return;
+        // Don't toggle when the click landed on the inner editable field — the
+        // user is trying to type, not toggle the dropdown.
+        if (e.target.closest(".input__field, .search input, button, .chip")) return;
         e.stopPropagation();
         if (!list) return;
         const open = combo.dataset.open === "true";
@@ -314,13 +317,24 @@
       if (!list) return;
       list.querySelectorAll("li").forEach(li => {
         if (li.classList.contains("combo__group") ||
-            li.classList.contains("combo__results__foot")) return;
+            li.classList.contains("combo__results__foot") ||
+            li.classList.contains("combo__loading") ||
+            li.classList.contains("combo__empty") ||
+            li.classList.contains("combo__create")) return;
         li.addEventListener("click", e => {
           e.stopPropagation();
           list.querySelectorAll("li.sel").forEach(s => s.classList.remove("sel"));
           li.classList.add("sel");
-          const valueEl = trigger.querySelector(".input__value");
-          if (valueEl) valueEl.textContent = li.textContent.trim();
+          // Prefer a real <input> (post-normalization) over the visual span.
+          const field = trigger.querySelector(".input__field, input, .input__value");
+          const text = li.textContent.trim();
+          if (field) {
+            if ("value" in field && field.tagName !== "SPAN") {
+              field.value = text;
+            } else {
+              field.textContent = text;
+            }
+          }
           combo.dataset.open = "false";
         });
       });
@@ -335,6 +349,229 @@
         });
       });
     }
+  }
+
+  /* ---------- Live character counter ----------
+   * For each .field wrapper, find a hint that looks like "n / 200" and bind it
+   * to the field's <input>/<textarea>: update n on input, flag --over when the
+   * cap is exceeded. Also enforce maxlength on inputs to match the cap.
+   */
+  function bindCounters(root) {
+    const counterRe = /^(\s*)(\d+)(\s*\/\s*)(\d+)(.*)$/;
+    root.querySelectorAll(".field, .variant__stage").forEach(scope => {
+      // Find a counter target: a span containing "n / m" inside .field__hint
+      // or in a sibling .row that pairs hint+counter.
+      const candidates = scope.querySelectorAll(".field__hint, .mono.small, .row > span");
+      candidates.forEach(span => {
+        if (span.dataset.sgtCounter) return;
+        const m = span.textContent.match(counterRe);
+        if (!m) return;
+        const max = parseInt(m[4], 10);
+        if (!max) return;
+        // Find the closest input/textarea in the same field/stage.
+        const field = scope.querySelector("input.input__field, textarea.input__field, textarea.textarea-stub, input[type='text'], textarea");
+        if (!field) return;
+        span.dataset.sgtCounter = "1";
+        // Initialize maxlength so the user can't blow past the cap silently.
+        if (!field.hasAttribute("maxlength") && field.tagName === "INPUT") {
+          field.setAttribute("maxlength", String(max));
+        }
+        const update = () => {
+          const len = (field.value || "").length;
+          span.textContent = `${len} / ${max}`;
+          const over = len > max;
+          span.classList.toggle("counter--over", over);
+          span.style.color = over ? "var(--danger)" : "";
+        };
+        field.addEventListener("input", update);
+        update();
+      });
+    });
+  }
+
+  /* ---------- Line-item table recompute ----------
+   * For each <table class="line-table">, on quantity / unit-price input,
+   * recompute the row's amount and the footer subtotals + grand total.
+   */
+  function bindLineItem(root) {
+    const parseNum = s => {
+      if (!s) return 0;
+      // Normalize full-width digits and strip commas/¥/whitespace.
+      const norm = String(s).replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+        .replace(/[,¥\s]/g, "");
+      const n = Number(norm);
+      return isFinite(n) ? n : 0;
+    };
+    const fmt = n => Math.round(n).toLocaleString("en-US");
+
+    root.querySelectorAll("table.line-table").forEach(table => {
+      const recalc = () => {
+        const subtotals = {}; // { "10": n, "8": n, "0": n }
+        table.querySelectorAll("tbody tr").forEach(tr => {
+          if (tr.classList.contains("line-table__add")) return;
+          const cells = tr.querySelectorAll(":scope > td");
+          if (cells.length < 7) return;
+          const qtyField = cells[2].querySelector("input, textarea");
+          const priceField = cells[4].querySelector("input, textarea");
+          const amountCell = cells[6];
+          const ratePill = cells[5].querySelector(".rate-pill");
+          if (!qtyField || !priceField || !amountCell) return;
+          const qty = parseNum(qtyField.value);
+          const price = parseNum(priceField.value);
+          const amount = qty * price;
+          amountCell.textContent = fmt(amount);
+          const rate = ratePill ? (ratePill.textContent.match(/(\d+)/) || [0, "0"])[1] : "0";
+          subtotals[rate] = (subtotals[rate] || 0) + amount;
+        });
+        // Update footer rows. Heuristic: a tfoot row with text "10%" is the
+        // 10% subtotal; same for 8%; the .grand row is the grand total.
+        table.querySelectorAll("tfoot tr").forEach(tr => {
+          const label = tr.querySelector("td:not(.num)");
+          const out = tr.querySelector("td.num.mono");
+          if (!out) return;
+          if (tr.classList.contains("grand")) {
+            const tax = (subtotals["10"] || 0) * 0.10 + (subtotals["8"] || 0) * 0.08;
+            const sum = Object.values(subtotals).reduce((a, b) => a + b, 0) + tax;
+            out.textContent = "¥" + fmt(sum);
+          } else {
+            const txt = (label ? label.textContent : "") + (out.previousElementSibling ? out.previousElementSibling.textContent : "");
+            const m = (tr.textContent || "").match(/(\d+)\s*%/);
+            if (m) out.textContent = fmt(subtotals[m[1]] || 0);
+            void txt;
+          }
+        });
+      };
+      table.querySelectorAll("tbody input, tbody textarea").forEach(el => {
+        // Only watch numeric cells; both qty (idx 2) and price (idx 4) carry
+        // the .input__field--num modifier when normalized from .mono numeric
+        // mockups, but mockups varied — so re-recalc on any cell change.
+        el.addEventListener("input", recalc);
+      });
+      // Initial sync (handles slight rounding differences in the mockup).
+      recalc();
+    });
+  }
+
+  /* ---------- Active-state toggles for tabs / pager / segmented buttons ---- */
+  function bindActiveToggles(root) {
+    // Main demo tabs (not usage tabs, which have their own binder).
+    root.querySelectorAll(".tabs").forEach(group => {
+      const tabs = group.querySelectorAll(":scope > .tabs__tab");
+      tabs.forEach(tab => {
+        if (tab.disabled) return;
+        tab.addEventListener("click", () => {
+          tabs.forEach(t => t.classList.remove("tabs__tab--active"));
+          tab.classList.add("tabs__tab--active");
+        });
+      });
+    });
+    // Pagination: numeric and arrow buttons that aren't disabled.
+    root.querySelectorAll(".pager").forEach(group => {
+      const buttons = group.querySelectorAll(":scope > button");
+      buttons.forEach(b => {
+        if (b.disabled) return;
+        // Skip prev/next/first/last — they shouldn't grab .active.
+        const label = b.getAttribute("aria-label") || "";
+        const isNav = /先頭|前|次|最終/.test(label) || /前へ|次へ/.test(b.textContent);
+        if (isNav) return;
+        if (b.classList.contains("ell") || b.classList.contains("muted")) return;
+        b.addEventListener("click", () => {
+          buttons.forEach(other => other.classList.remove("active"));
+          b.classList.add("active");
+        });
+      });
+    });
+    // Generic segmented button groups: .btn-group, .prefs (47都道府県), and
+    // any inline .row containing a single .btn--primary among siblings.
+    const segmentedSelectors = [".btn-group", ".prefs"];
+    segmentedSelectors.forEach(sel => {
+      root.querySelectorAll(sel).forEach(group => {
+        const buttons = group.querySelectorAll(":scope > button");
+        buttons.forEach(b => {
+          if (b.disabled) return;
+          b.addEventListener("click", () => {
+            buttons.forEach(o => {
+              o.classList.remove("btn--primary", "prefs__btn--active");
+              if (sel === ".btn-group" && !o.classList.contains("btn--ghost")) {
+                o.classList.add("btn--ghost");
+              }
+            });
+            if (sel === ".btn-group") {
+              b.classList.remove("btn--ghost");
+              b.classList.add("btn--primary");
+            } else {
+              b.classList.add("prefs__btn--active");
+            }
+          });
+        });
+      });
+    });
+    // Tax rate pills: clicking toggles --active among peers in the same row.
+    root.querySelectorAll(".rate-pill").forEach(pill => {
+      // Only rate-pills inside the dedicated tax demo are interactive; pills
+      // sitting inside a table row stay decorative (the row knows its rate).
+      if (pill.closest("td") || pill.closest("tr")) return;
+      pill.style.cursor = "pointer";
+      pill.addEventListener("click", () => {
+        const peers = pill.parentElement
+          ? pill.parentElement.querySelectorAll(":scope > .rate-pill")
+          : [pill];
+        peers.forEach(p => p.classList.remove("rate-pill--active"));
+        pill.classList.add("rate-pill--active");
+      });
+    });
+  }
+
+  /* ---------- Stepper: clicking a done step makes it current ---------- */
+  function bindStepper(root) {
+    root.querySelectorAll(".stepper").forEach(ol => {
+      const steps = ol.querySelectorAll(":scope > .stepper__step");
+      steps.forEach(step => {
+        if (!step.classList.contains("stepper__step--done")) return;
+        step.style.cursor = "pointer";
+        step.addEventListener("click", () => {
+          // Demote the current marker to plain done (treat as completed).
+          steps.forEach(s => {
+            if (s.classList.contains("stepper__step--current")) {
+              s.classList.remove("stepper__step--current");
+              s.classList.add("stepper__step--done");
+            }
+          });
+          step.classList.remove("stepper__step--done");
+          step.classList.add("stepper__step--current");
+        });
+      });
+    });
+  }
+
+  /* ---------- Dismissible widgets ----------
+   * Delegated handler: clicking a close icon button removes the nearest
+   * dismissible ancestor. Same handler covers chip removal.
+   */
+  function bindDismiss(root) {
+    if (root.body && root.body.dataset.sgtDismissBound) return;
+    if (root.body) root.body.dataset.sgtDismissBound = "1";
+    const target = root.body || root;
+    target.addEventListener("click", e => {
+      // Chip × icon (any svg inside .chip).
+      const chip = e.target.closest(".chip");
+      if (chip && e.target.closest("svg, .icon")) {
+        chip.remove();
+        return;
+      }
+      const closeBtn = e.target.closest(
+        '.btn--icon[aria-label="閉じる"], .btn--icon[aria-label="クリア"], button[aria-label="閉じる"], button[aria-label="クリア"]'
+      );
+      if (!closeBtn) return;
+      const host = closeBtn.closest(
+        ".alert, .banner, .toast, .modal-stub, .picker-card, .file-row, .drawer-frame"
+      );
+      if (host) {
+        host.style.transition = "opacity 0.15s ease";
+        host.style.opacity = "0";
+        setTimeout(() => host.remove(), 150);
+      }
+    });
   }
 
   function bindUsageTabs(root) {
@@ -473,6 +710,11 @@
     normalizeFormControls(document);
     bindCombos(document);
     bindUsageTabs(document);
+    bindCounters(document);
+    bindLineItem(document);
+    bindActiveToggles(document);
+    bindStepper(document);
+    bindDismiss(document);
     bindSearch();
   }
 
