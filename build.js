@@ -600,26 +600,45 @@
   /* ---------- Icons grid ----------
    * Renders the global ICON object as a clickable grid. Clicking a card
    * copies a JS template-literal snippet (e.g. "${ICON.search}") to the
-   * clipboard and flashes a "Copied" indicator.
+   * clipboard and flashes a "Copied" indicator. When window.ICON_GROUPS is
+   * present, the grid is rendered as labeled sections in the declared order.
    */
   function renderIconsGrid() {
     const grid = document.querySelector("[data-icons-grid]");
     if (!grid) return;
     const ICONS = window.ICON || {};
-    const names = Object.keys(ICONS).sort();
-    grid.innerHTML = names.map(name => {
-      const svg = ICONS[name].replace('class="icon"', 'class="icon-card__svg"');
+    const GROUPS = window.ICON_GROUPS;
+
+    const card = name => {
+      const svg = (ICONS[name] || "").replace('class="icon"', 'class="icon-card__svg"');
       return `<button type="button" class="icon-card" data-icon-name="${name}" aria-label="アイコン ${name} をコピー">
         ${svg}
         <span class="icon-card__name mono">${name}</span>
       </button>`;
-    }).join("");
+    };
+
+    if (Array.isArray(GROUPS) && GROUPS.length) {
+      grid.innerHTML = GROUPS.map(g => `
+        <section class="icon-group" data-group-id="${g.id}" data-group-label="${g.label}">
+          <header class="icon-group__head">
+            <h3 class="icon-group__title">${g.label}</h3>
+            <span class="icon-group__count mono">${g.names.length}</span>
+          </header>
+          <div class="icon-grid">${g.names.map(card).join("")}</div>
+        </section>`).join("");
+      // Make the host element behave as a flow container, since we now nest
+      // sub-grids inside each group.
+      grid.classList.add("icon-grid--grouped");
+    } else {
+      const names = Object.keys(ICONS).sort();
+      grid.innerHTML = names.map(card).join("");
+    }
+
     grid.addEventListener("click", e => {
       const card = e.target.closest(".icon-card");
       if (!card) return;
       const name = card.dataset.iconName;
       const snippet = "${ICON." + name + "}";
-      const fallback = ICONS[name] || "";
       const copy = navigator.clipboard && navigator.clipboard.writeText
         ? navigator.clipboard.writeText(snippet)
         : Promise.reject(new Error("clipboard unavailable"));
@@ -639,17 +658,28 @@
       });
       card.classList.add("icon-card--copied");
       setTimeout(() => card.classList.remove("icon-card--copied"), 1200);
-      // Suppress unused-warning by referencing fallback (kept for future use).
-      void fallback;
     });
 
-    // Local search box dedicated to this section.
+    // Local search box dedicated to this section. Searches by icon name and
+    // by group label so "ナビ" / "矢印" / "状態" all surface the right rows.
     const filter = document.querySelector(".icon-grid__search");
     if (filter) {
       filter.addEventListener("input", () => {
         const q = filter.value.trim().toLowerCase();
         grid.querySelectorAll(".icon-card").forEach(c => {
           c.style.display = !q || c.dataset.iconName.includes(q) ? "" : "none";
+        });
+        grid.querySelectorAll(".icon-group").forEach(g => {
+          if (!q) { g.style.display = ""; return; }
+          const matchesLabel = (g.dataset.groupLabel || "").toLowerCase().includes(q) ||
+                                (g.dataset.groupId || "").toLowerCase().includes(q);
+          if (matchesLabel) {
+            g.style.display = "";
+            g.querySelectorAll(".icon-card").forEach(c => { c.style.display = ""; });
+            return;
+          }
+          const visible = g.querySelector(".icon-card:not([style*='display: none'])");
+          g.style.display = visible ? "" : "none";
         });
       });
     }

@@ -3393,3 +3393,93 @@ tr.sel.zebra { background: #e6efff; }
   .lp-feature { padding: 22px 18px; }
   .lp-code { font-size: 11.5px; padding: 14px 16px; }
 }
+
+/* ================================================================
+   Icons page (icons.html)
+   ================================================================ */
+.icons-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 28px 96px;
+}
+.icons-page__head {
+  margin-bottom: 32px;
+  border-bottom: 1px dashed var(--line);
+  padding-bottom: 24px;
+}
+.icons-page__title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+.icons-page__lede {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.85;
+  margin: 0 0 20px;
+  max-width: 720px;
+}
+.icons-page__lede code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--bg-2);
+  padding: 1px 6px;
+  border-radius: var(--r-sm);
+  color: var(--ink);
+}
+.icons-page__toolbar {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  align-items: center;
+}
+.icons-page__toolbar .search {
+  flex: 1; min-width: 280px; max-width: 480px;
+}
+
+/* When the icons grid is rendered as labeled groups, the host element holds
+   the section list rather than the icon cards directly. */
+.icon-grid--grouped {
+  display: block;
+}
+.icon-group {
+  margin-bottom: 36px;
+}
+.icon-group:last-child { margin-bottom: 0; }
+.icon-group__head {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-2);
+  margin-bottom: 14px;
+}
+.icon-group__title {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.icon-group__count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.icon-group .icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .icons-page { padding: 24px 16px 64px; }
+  .icons-page__title { font-size: 22px; }
+  .icons-page__toolbar .search { min-width: 0; max-width: none; width: 100%; }
+  .icon-group .icon-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+  .icon-card { padding: 12px 6px; }
+}
+@media (max-width: 480px) {
+  .icons-page { padding: 16px 12px 48px; }
+  .icon-group .icon-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 6px; }
+  .icon-card { padding: 10px 4px; gap: 6px; }
+  .icon-card__name { font-size: 10px; }
+}

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=10" />
+<link rel="stylesheet" href="styles.css?v=11" />
 </head>
 <body>
 
@@ -31,7 +31,7 @@
     <a href="index.html" class="app-nav__link">ホーム</a>
     <a href="docs.html" class="app-nav__link">ドキュメント</a>
     <a href="#components" class="app-nav__link app-nav__link--active">コンポーネント</a>
-    <a href="#icons" class="app-nav__link">アイコン</a>
+    <a href="icons.html" class="app-nav__link">アイコン</a>
   </nav>
 </header>
 
@@ -319,29 +319,15 @@
       <div data-component="seal" id="seal"></div>
     </section>
 
-    <section class="section" id="icons">
-      <header class="section__head">
-        <h2 class="section__title">アイコン</h2>
-        <p class="section__lede">Shigoto UI 標準のストロークアイコン（16）。検索で絞り込み、カードをクリックするとスニペットがクリップボードにコピーされます。</p>
-      </header>
-      <div class="icon-toolbar">
-        <div class="search">
-          <span data-icon="search"></span>
-          <input class="icon-grid__search" placeholder="アイコン名で絞り込み（例: search / caret）" />
-        </div>
-      </div>
-      <div class="icon-grid" data-icons-grid></div>
-    </section>
-
     <footer class="muted small" style="padding: 24px 0; border-top: 1px dashed var(--line); text-align: center;">
       Shigoto UI — Web Components first / 国産業務系UIライブラリ ／ ワイヤーフレーム v0.6 ／ アイコンは全て SVG ストロークで統一
     </footer>
   </main>
 </div>
 
-<script src="icons.js?v=10"></script>
-<script src="usage.js?v=10"></script>
-<script src="cards.js?v=10"></script>
+<script src="icons.js?v=11"></script>
+<script src="usage.js?v=11"></script>
+<script src="cards.js?v=11"></script>
 <script>
   /* Replace [data-icon] placeholders with SVG markup once cards are ready */
   document.addEventListener('DOMContentLoaded', () => {
@@ -353,7 +339,7 @@
     }, 0);
   });
 </script>
-<script src="build.js?v=10"></script>
+<script src="build.js?v=11"></script>
 
 </body>
 </html>
