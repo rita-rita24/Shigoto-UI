@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shigoto UI — 国産業務系UIライブラリ</title>
+<meta name="description" content="日本の業務システムのための71のWeb Components。インボイス・法人番号・全銀フォーマット・和暦・締日・全角→半角を最初から取りこぼさない、フレームワーク非依存の業務系UIライブラリ。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=10" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-header__inner">
+    <div class="brand">
+      <span class="brand__mark">shigoto-ui</span>
+      <span class="brand__sub">Component Library</span>
+      <span class="brand__ja">／ 国産業務系UIライブラリ</span>
+    </div>
+    <div class="app-header__spacer"></div>
+    <span class="meta-pill meta-pill--accent">v0.6 alpha</span>
+    <span class="meta-pill">71 components</span>
+  </div>
+  <nav class="app-nav" aria-label="主要メニュー">
+    <a href="index.html" class="app-nav__link app-nav__link--active">ホーム</a>
+    <a href="docs.html" class="app-nav__link">ドキュメント</a>
+    <a href="Shigoto UI Catalog.html#components" class="app-nav__link">コンポーネント</a>
+    <a href="Shigoto UI Catalog.html#icons" class="app-nav__link">アイコン</a>
+  </nav>
+</header>
+
+<main class="lp">
+
+  <!-- ===== Hero ===== -->
+  <section class="lp-section lp-hero">
+    <div>
+      <span class="lp-hero__eyebrow">Web Components first ／ 国産業務系UI</span>
+      <h1 class="lp-hero__title">
+        業務システムのUI、<br />
+        もう <em>"輸入"</em> しない。
+      </h1>
+      <p class="lp-hero__sub">
+        海外発のUIフレームワークでは取りこぼされる、<strong>インボイス・法人番号・全銀フォーマット・和暦・締日・全角→半角の自動補正</strong>を、最初から組み込んだ業務系UIライブラリ。フレームワーク非依存の Web Components で、Vanilla / React / Vue どこでも動きます。
+      </p>
+      <div class="lp-hero__cta">
+        <a href="Shigoto UI Catalog.html#components" class="btn btn--primary">コンポーネントを見る</a>
+        <a href="docs.html" class="btn btn--ghost">ドキュメントを読む</a>
+      </div>
+      <div class="lp-hero__meta">
+        <div><strong>71</strong>業務向けコンポーネント</div>
+        <div><strong>16</strong>標準ストロークアイコン</div>
+        <div><strong>0</strong>外部依存ライブラリ</div>
+      </div>
+    </div>
+
+    <!-- Stylized live preview that mirrors the catalog wireframe aesthetic. -->
+    <div class="lp-hero__preview" aria-hidden="true">
+      <div class="lp-hero__preview-bar"><span></span><span></span><span></span></div>
+      <div>
+        <div class="lp-hero__field-label">見積金額（税抜）</div>
+        <div class="lp-hero__field lp-hero__field--focus">
+          <span class="muted small mono">¥</span>
+          <span style="flex:1; font-family: var(--mono);">1,234,567</span>
+          <span class="muted small mono">JPY</span>
+        </div>
+      </div>
+      <div>
+        <div class="lp-hero__field-label">適格請求書 登録番号</div>
+        <div class="lp-hero__field">
+          <span class="muted small mono">T</span>
+          <span style="flex:1; font-family: var(--mono);">9012301234567</span>
+          <span style="color: var(--ok); font-size: 11px;">✓ 国税庁DB一致</span>
+        </div>
+      </div>
+      <div>
+        <div class="lp-hero__field-label">支払サイト</div>
+        <div class="lp-hero__chip-row">
+          <span class="lp-hero__chip">月末締</span>
+          <span class="lp-hero__chip">→</span>
+          <span class="lp-hero__chip lp-hero__chip--accent">翌月末払</span>
+          <span class="lp-hero__chip">FY2026</span>
+          <span class="lp-hero__chip">10%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Why / 背景 ===== -->
+  <section class="lp-section">
+    <div class="lp-section__head">
+      <span class="lp-section__eyebrow">Why Shigoto UI</span>
+      <h2 class="lp-section__title">海外UIライブラリの "もう一歩手前" を埋める。</h2>
+      <p class="lp-section__lede">
+        洗練された海外発のUIライブラリは、ボタン、テーブル、フォームを美しく揃えてくれます。
+        けれど、日本の業務システムには独自の前提があります。これらは「あとから足す」飾りではなく、設計の初日から組み込まれていなければならない要件です。
+      </p>
+    </div>
+
+    <div class="lp-why">
+      <div>
+        <p class="lp-why__lead">
+          ¥・カンマ・税率・全角数字・和暦——
+          毎回プロジェクトごとに作り直されている "業務UIあるある" を、ライブラリ側で標準化する。
+        </p>
+        <p class="lp-why__text">
+          Shigoto UI は、見積・請求・承認・監査・帳票の全フェーズで使い回しできる71の Web Components を、トークンベースのフラットなワイヤーフレーム美学で揃えています。長時間の業務利用に耐える視認性、印刷を前提にした A4 レイアウト、変更を全て可視化する承認・監査の部品まで、業務系SaaSがほしい場所に手が届きます。
+        </p>
+      </div>
+      <ul class="lp-why__list">
+        <li>
+          <span class="mono">T+13桁</span>
+          <span><strong>適格請求書（インボイス）登録番号</strong>形式チェック・接頭辞自動付与・国税庁API連携を内包。</span>
+        </li>
+        <li>
+          <span class="mono">法人番号</span>
+          <span><strong>13桁の登録番号から商号・本店所在地</strong>を国税庁の登録情報から自動取得。</span>
+        </li>
+        <li>
+          <span class="mono">全銀</span>
+          <span><strong>金融機関コード／支店コード／普通・当座／口座名義カナ</strong>を1コンポーネントで一括管理。</span>
+        </li>
+        <li>
+          <span class="mono">和暦／FY</span>
+          <span><strong>4月始まりの年度・令和表記</strong>を切替可能。`startMonth`で年度開始月を変更。</span>
+        </li>
+        <li>
+          <span class="mono">¥／半角</span>
+          <span><strong>全角→半角の自動正規化、カンマ自動付与、税率別小計／合計</strong>を業務入力レベルで吸収。</span>
+        </li>
+        <li>
+          <span class="mono">締日</span>
+          <span><strong>月末・20日・10日締＋支払サイト・営業日換算</strong>まで標準化。</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== Features (使うべき4つの理由) ===== -->
+  <section class="lp-section">
+    <div class="lp-section__head">
+      <span class="lp-section__eyebrow">Why use it</span>
+      <h2 class="lp-section__title">使うべき4つの理由</h2>
+      <p class="lp-section__lede">
+        日本の業務UIに必要なものを最初から備え、フレームワーク非依存で動き、印刷・監査までカバーする。
+      </p>
+    </div>
+
+    <div class="lp-features__grid">
+      <article class="lp-feature">
+        <div class="lp-feature__num">01 ／ Coverage</div>
+        <h3 class="lp-feature__title">日本の業務に最適化された71コンポーネント</h3>
+        <p class="lp-feature__desc">
+          金額・税率・郵便・住所・電話・日付・法人番号・銀行口座・年度——日本固有の入力ルールを部品レベルで吸収。海外UIライブラリでは取りこぼされる "業務系の前提" を、最初から実装済みです。
+        </p>
+        <div class="lp-feature__tags">
+          <span class="lp-feature__tag">money-input</span>
+          <span class="lp-feature__tag">invoice-id</span>
+          <span class="lp-feature__tag">corp-number</span>
+          <span class="lp-feature__tag">bank-account</span>
+          <span class="lp-feature__tag">fiscal-year</span>
+        </div>
+      </article>
+
+      <article class="lp-feature">
+        <div class="lp-feature__num">02 ／ Compatibility</div>
+        <h3 class="lp-feature__title">Web Components first / フレームワーク非依存</h3>
+        <p class="lp-feature__desc">
+          Vanilla JS / React / Vue / Svelte、どんな環境でも <code class="mono">&lt;sgt-money-input&gt;</code> の1行で導入できる。標準仕様準拠なので、既存システムへの段階的な置換・併存・移行が容易です。
+        </p>
+        <div class="lp-feature__tags">
+          <span class="lp-feature__tag">Custom Elements</span>
+          <span class="lp-feature__tag">Shadow DOM</span>
+          <span class="lp-feature__tag">React wrapper</span>
+          <span class="lp-feature__tag">Vue wrapper</span>
+        </div>
+      </article>
+
+      <article class="lp-feature">
+        <div class="lp-feature__num">03 ／ Aesthetic</div>
+        <h3 class="lp-feature__title">業務系のためのワイヤーフレーム美学</h3>
+        <p class="lp-feature__desc">
+          影・派手な色・無駄なアニメーションを排し、長時間の業務利用に耐えるフラットな視認性。CSS変数でテーマ・配色・余白・角丸を上書きでき、ブランドへの組み込みも 30 秒。
+        </p>
+        <div class="lp-feature__tags">
+          <span class="lp-feature__tag">CSS variables</span>
+          <span class="lp-feature__tag">flat / wireframe</span>
+          <span class="lp-feature__tag">tabular-nums</span>
+        </div>
+      </article>
+
+      <article class="lp-feature">
+        <div class="lp-feature__num">04 ／ Lifecycle</div>
+        <h3 class="lp-feature__title">見積→請求→承認→監査まで通貫</h3>
+        <p class="lp-feature__desc">
+          入力部品から帳票ヘッダ、明細テーブル、承認ステッパー、コメント・操作監査・差分表示、A4 1ページに収まる印刷プレビューまで。業務アプリの全フェーズを1ライブラリでカバーします。
+        </p>
+        <div class="lp-feature__tags">
+          <span class="lp-feature__tag">line-item-table</span>
+          <span class="lp-feature__tag">approval-log</span>
+          <span class="lp-feature__tag">audit-list</span>
+          <span class="lp-feature__tag">tpl-print</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Showcase ===== -->
+  <section class="lp-section">
+    <div class="lp-section__head">
+      <span class="lp-section__eyebrow">Showcase</span>
+      <h2 class="lp-section__title">代表コンポーネント</h2>
+      <p class="lp-section__lede">
+        業務UIの背骨となる6つを抜粋。 全71種類は<a href="Shigoto UI Catalog.html#components">コンポーネントカタログ</a>から確認できます。
+      </p>
+    </div>
+
+    <div class="lp-showcase__grid">
+      <article class="lp-showcase__card">
+        <div class="lp-showcase__head">
+          <h3 class="lp-showcase__title">金額入力</h3>
+          <span class="lp-showcase__tag mono">&lt;sgt-money-input&gt;</span>
+        </div>
+        <div class="lp-showcase__demo">
+          <div class="lp-hero__field-label">見積金額（税抜）</div>
+          <div class="lp-hero__field">
+            <span class="muted small mono">¥</span>
+            <span style="flex:1; font-family: var(--mono);">1,234,567</span>
+            <span class="muted small mono">JPY</span>
+          </div>
+        </div>
+        <p class="lp-showcase__desc">¥プレフィクス・カンマ自動・全角→半角・税抜/税込・小数桁オプション。</p>
+      </article>
+
+      <article class="lp-showcase__card">
+        <div class="lp-showcase__head">
+          <h3 class="lp-showcase__title">適格請求書番号</h3>
+          <span class="lp-showcase__tag mono">&lt;sgt-invoice-id-input&gt;</span>
+        </div>
+        <div class="lp-showcase__demo">
+          <div class="lp-hero__field-label">登録番号</div>
+          <div class="lp-hero__field">
+            <span class="muted small mono">T</span>
+            <span style="flex:1; font-family: var(--mono);">9012301234567</span>
+            <span style="color: var(--ok); font-size: 11px;">✓</span>
+          </div>
+        </div>
+        <p class="lp-showcase__desc">T+13桁形式チェック・接頭辞自動付与・国税庁API連携。</p>
+      </article>
+
+      <article class="lp-showcase__card">
+        <div class="lp-showcase__head">
+          <h3 class="lp-showcase__title">郵便番号入力</h3>
+          <span class="lp-showcase__tag mono">&lt;sgt-postal-code-input&gt;</span>
+        </div>
+        <div class="lp-showcase__demo">
+          <div class="lp-hero__field-label">郵便番号</div>
+          <div class="lp-hero__field">
+            <span class="muted small mono">〒</span>
+            <span style="flex:1; font-family: var(--mono);">100-0001</span>
+            <span style="color: var(--accent); font-size: 11px;">住所検索</span>
+          </div>
+        </div>
+        <p class="lp-showcase__desc">7桁固定、ハイフン正規化、全角→半角、住所自動補完。</p>
+      </article>
+
+      <article class="lp-showcase__card">
+        <div class="lp-showcase__head">
+          <h3 class="lp-showcase__title">承認ステッパー</h3>
+          <span class="lp-showcase__tag mono">&lt;sgt-stepper&gt;</span>
+        </div>
+        <div class="lp-showcase__demo">
+          <div class="lp-hero__chip-row" style="gap: 4px; align-items: center;">
+            <span class="lp-hero__chip lp-hero__chip--accent">起票</span>
+            <span class="muted small">→</span>
+            <span class="lp-hero__chip lp-hero__chip--accent">確認</span>
+            <span class="muted small">→</span>
+            <span class="lp-hero__chip" style="border-color: var(--accent); color: var(--accent); background: var(--paper);">承認待</span>
+            <span class="muted small">→</span>
+            <span class="lp-hero__chip">経理</span>
+          </div>
+        </div>
+        <p class="lp-showcase__desc">完了済 / 進行中 / 未着手の3状態。クリックで戻れる。</p>
+      </article>
+
+      <article class="lp-showcase__card">
+        <div class="lp-showcase__head">
+          <h3 class="lp-showcase__title">明細テーブル</h3>
+          <span class="lp-showcase__tag mono">&lt;sgt-line-item-table&gt;</span>
+        </div>
+        <div class="lp-showcase__demo" style="padding: 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+            <thead><tr style="background: var(--bg-3); color: var(--muted);">
+              <th style="padding: 6px 10px; text-align: left;">品目</th>
+              <th style="padding: 6px 10px; text-align: right;">数量</th>
+              <th style="padding: 6px 10px; text-align: right;">金額</th>
+            </tr></thead>
+            <tbody>
+              <tr><td style="padding: 6px 10px; border-top: 1px dashed var(--line-2);">導入支援</td><td style="padding: 6px 10px; text-align: right; font-family: var(--mono); border-top: 1px dashed var(--line-2);">2</td><td style="padding: 6px 10px; text-align: right; font-family: var(--mono); border-top: 1px dashed var(--line-2);">2,400,000</td></tr>
+              <tr><td style="padding: 6px 10px; border-top: 1px dashed var(--line-2);">設計レビュー</td><td style="padding: 6px 10px; text-align: right; font-family: var(--mono); border-top: 1px dashed var(--line-2);">5</td><td style="padding: 6px 10px; text-align: right; font-family: var(--mono); border-top: 1px dashed var(--line-2);">75,000</td></tr>
+              <tr><td colspan="2" style="padding: 6px 10px; text-align: right; border-top: 1px solid var(--line); font-weight: 600;">合計（税込）</td><td style="padding: 6px 10px; text-align: right; font-family: var(--mono); border-top: 1px solid var(--line); font-weight: 700;">¥2,722,500</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="lp-showcase__desc">数量×単価の自動計算、税率別小計、Tab/Enterキー操作。</p>
+      </article>
+
+      <article class="lp-showcase__card">
+        <div class="lp-showcase__head">
+          <h3 class="lp-showcase__title">ステータスバッジ</h3>
+          <span class="lp-showcase__tag mono">&lt;sgt-status&gt;</span>
+        </div>
+        <div class="lp-showcase__demo">
+          <div class="lp-hero__chip-row">
+            <span class="lp-hero__chip" style="border-color: var(--ok); color: var(--ok); background: var(--ok-soft);">承認済</span>
+            <span class="lp-hero__chip" style="border-color: var(--warn); color: var(--warn); background: var(--warn-soft);">承認待</span>
+            <span class="lp-hero__chip" style="border-color: var(--danger); color: var(--danger); background: var(--danger-soft);">差戻</span>
+            <span class="lp-hero__chip">下書き</span>
+            <span class="lp-hero__chip lp-hero__chip--accent">発行済</span>
+          </div>
+        </div>
+        <p class="lp-showcase__desc">起票・確認・承認・発行・差戻 の業務状態を統一表現。</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Install ===== -->
+  <section class="lp-section">
+    <div class="lp-install">
+      <div class="lp-install__copy">
+        <span class="lp-section__eyebrow">Install</span>
+        <h3>3行で導入。</h3>
+        <p>
+          npm でインストールするか、CDN を 1 行読み込むだけ。
+          Custom Elements として登録されるので、HTML に書くだけで使えます。
+          React / Vue 用のラッパパッケージも用意。
+        </p>
+        <ol class="lp-install__steps">
+          <li><code class="mono">@shigoto-ui/elements</code> を読み込む</li>
+          <li>HTML / JSX / template に <code class="mono">&lt;sgt-*&gt;</code> を書く</li>
+          <li>CSS変数でブランドに合わせて色を上書き</li>
+        </ol>
+      </div>
+
+      <div class="lp-code">
+        <div class="lp-code__head">
+          <span>HTML</span>
+          <span>copy</span>
+        </div><span class="lp-code__c">&lt;!-- 1行で導入 --&gt;</span>
+<span class="lp-code__t">&lt;script</span> <span class="lp-code__a">type</span>=<span class="lp-code__s">"module"</span>
+        <span class="lp-code__a">src</span>=<span class="lp-code__s">"https://unpkg.com/@shigoto-ui/elements"</span><span class="lp-code__t">&gt;&lt;/script&gt;</span>
+
+<span class="lp-code__c">&lt;!-- 業務UIの部品をHTMLにそのまま書ける --&gt;</span>
+<span class="lp-code__t">&lt;sgt-money-input</span> <span class="lp-code__a">value</span>=<span class="lp-code__s">"1234567"</span><span class="lp-code__t">&gt;&lt;/sgt-money-input&gt;</span>
+<span class="lp-code__t">&lt;sgt-postal-code-input</span><span class="lp-code__t">&gt;&lt;/sgt-postal-code-input&gt;</span>
+<span class="lp-code__t">&lt;sgt-invoice-id-input</span> <span class="lp-code__a">required</span><span class="lp-code__t">&gt;&lt;/sgt-invoice-id-input&gt;</span>
+
+<span class="lp-code__c">&lt;!-- イベントもネイティブ --&gt;</span>
+<span class="lp-code__t">&lt;script&gt;</span>
+  <span class="lp-code__k">document</span>.querySelector(<span class="lp-code__s">'sgt-money-input'</span>)
+    .addEventListener(<span class="lp-code__s">'sgt:change'</span>, e =&gt; {
+      <span class="lp-code__k">console</span>.log(e.detail.value);
+    });
+<span class="lp-code__t">&lt;/script&gt;</span></div>
+    </div>
+  </section>
+
+  <!-- ===== Final CTA ===== -->
+  <section class="lp-cta">
+    <h2>業務システムを、より速く、より正確に。</h2>
+    <p>71の業務向けコンポーネントが、設計と実装の手戻りを減らします。</p>
+    <div class="lp-cta__row">
+      <a href="Shigoto UI Catalog.html#components" class="btn btn--primary">コンポーネントカタログ</a>
+      <a href="docs.html" class="btn btn--ghost">導入ガイド</a>
+    </div>
+  </section>
+
+  <footer class="lp-footer">
+    <div>© 2026 Shigoto UI ／ ワイヤーフレーム v0.6 alpha</div>
+    <div class="lp-footer__links">
+      <a href="docs.html">ドキュメント</a>
+      <a href="Shigoto UI Catalog.html#components">コンポーネント</a>
+      <a href="Shigoto UI Catalog.html#icons">アイコン</a>
+    </div>
+  </footer>
+
+</main>
+
+</body>
+</html>
