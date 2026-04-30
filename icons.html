@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shigoto UI — アイコン</title>
+<meta name="description" content="Shigoto UI 標準のストロークアイコン。viewBox 16×16 / stroke-width 1.4 / round caps で統一。クリックでコードスニペットをコピー。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=11" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-header__inner">
+    <div class="brand">
+      <span class="brand__mark">shigoto-ui</span>
+      <span class="brand__sub">Icons</span>
+      <span class="brand__ja">／ 国産業務系UIライブラリ</span>
+    </div>
+    <div class="app-header__spacer"></div>
+    <span class="meta-pill meta-pill--accent">v0.6 alpha</span>
+    <span class="meta-pill" data-icons-total>—</span>
+  </div>
+  <nav class="app-nav" aria-label="主要メニュー">
+    <a href="index.html" class="app-nav__link">ホーム</a>
+    <a href="docs.html" class="app-nav__link">ドキュメント</a>
+    <a href="Shigoto UI Catalog.html#components" class="app-nav__link">コンポーネント</a>
+    <a href="icons.html" class="app-nav__link app-nav__link--active">アイコン</a>
+  </nav>
+</header>
+
+<main class="icons-page">
+
+  <section class="icons-page__head">
+    <h1 class="icons-page__title">アイコン</h1>
+    <p class="icons-page__lede">
+      Shigoto UI 標準のストロークアイコン。<code class="mono">viewBox 16×16</code> ／ <code class="mono">stroke-width 1.4</code> ／ <code class="mono">stroke-linecap=round</code> で統一されており、<code class="mono">currentColor</code> を継承するため任意の色に染められます。カードをクリックすると <code class="mono">${'$'}{ICON.<i>name</i>}</code> 形式のスニペットがクリップボードにコピーされます。
+    </p>
+
+    <div class="icons-page__toolbar">
+      <div class="search">
+        <span data-icon="search"></span>
+        <input class="icon-grid__search" placeholder="アイコン名 / カテゴリ名で絞り込み（例: arrow / 業務 / status）" />
+        <span class="key">/</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="icons-page__body" data-icons-grid></div>
+
+  <footer class="muted small" style="padding: 24px 0; border-top: 1px dashed var(--line); text-align: center; margin-top: 40px;">
+    Shigoto UI — Web Components first / 国産業務系UIライブラリ ／ アイコンは全て SVG ストロークで統一
+  </footer>
+</main>
+
+<script src="icons.js?v=11"></script>
+<script src="build.js?v=11"></script>
+<script>
+  // After build.js renders the grid, replace any [data-icon] placeholders in
+  // the header/toolbar (search icon) with real SVG markup, and write the
+  // total icon count into the meta pill.
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      document.querySelectorAll("[data-icon]").forEach(el => {
+        const name = el.getAttribute("data-icon");
+        if (window.ICON && window.ICON[name]) el.outerHTML = window.ICON[name];
+      });
+      const pill = document.querySelector("[data-icons-total]");
+      if (pill && window.ICON) pill.textContent = Object.keys(window.ICON).length + " icons";
+    }, 0);
+  });
+</script>
+
+</body>
+</html>
