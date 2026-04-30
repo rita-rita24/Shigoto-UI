@@ -829,7 +829,12 @@ kbd {
 .btn--focus { outline: 2px solid var(--accent); outline-offset: 2px; }
 .btn--loading { opacity: 0.85; pointer-events: none; }
 .btn--lg { font-size: 14px; padding: 8px 18px; min-height: 38px; }
-.btn .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: sp 0.8s linear infinite; vertical-align: -2px; margin-right: 6px; }
+.btn .spinner {
+  display: inline-block; width: 12px; height: 12px;
+  border: 2px solid currentColor; border-top-color: transparent;
+  border-radius: 50%; animation: sp 0.8s linear infinite;
+  vertical-align: middle;
+}
 @keyframes sp { to { transform: rotate(360deg); } }
 
 /* ---------- Card example ---------- */
@@ -2352,8 +2357,15 @@ tr.sel.zebra { background: #e6efff; }
 @keyframes spinner { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
 .btn--loading { opacity: .85; pointer-events: none; }
-.btn--loading .spinner { width: 12px; height: 12px; border-color: rgba(255,255,255,.4); border-top-color: #fff; }
-.btn--ghost.btn--loading .spinner { border-color: var(--line); border-top-color: var(--accent); }
+/* Spinner inherits the button's text color so it's visible on every variant
+ * (primary / secondary / ghost / danger). */
+.btn--loading .spinner {
+  width: 12px; height: 12px;
+  border-color: currentColor;
+  border-top-color: transparent;
+  opacity: 0.85;
+  margin-right: 4px;
+}
 .overlay-frame {
   position: relative; min-height: 200px;
   border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;

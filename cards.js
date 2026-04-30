@@ -802,7 +802,7 @@ const CARDS_V3 = {
         <button class="btn"><span class="mono">⤓</span> CSV取込</button>
         <button class="btn btn--ghost"><span class="mono">⤒</span> CSV出力</button>
         <button class="btn btn--ghost"><span class="mono">🖨</span> 印刷</button>
-        <button class="btn btn--danger btn--sm"><span class="mono">×</span> 削除</button>
+        <button class="btn btn--danger"><span class="mono">×</span> 削除</button>
       </div>`
   },
   "card": {
@@ -1338,7 +1338,7 @@ const CARDS_V4 = {
         <button class="btn">${I.download}<span>CSV取込</span></button>
         <button class="btn btn--ghost">${I.upload}<span>CSV出力</span></button>
         <button class="btn btn--ghost">${I.print}<span>印刷</span></button>
-        <button class="btn btn--danger btn--sm">${I.close}<span>削除</span></button>
+        <button class="btn btn--danger">${I.close}<span>削除</span></button>
       </div>
       <h4 class="sub" style="margin-top: 16px;">アイコンのみ / 全幅 / グループ</h4>
       <div class="row">
