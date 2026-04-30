@@ -2824,3 +2824,93 @@ tr.sel.zebra { background: #e6efff; }
 .docs__list { padding-left: 24px; }
 .docs__list li { margin: 4px 0; }
 .docs a { color: var(--accent); }
+
+/* ================================================================
+   Form grid helpers (used by multi-input cards) and counter overflow
+   ================================================================ */
+.form-grid { display: grid; gap: 12px; }
+.form-grid--label-1col { grid-template-columns: 160px 1fr 1fr; }
+.form-grid--2 { grid-template-columns: 1fr 1fr; }
+.form-grid--3 { grid-template-columns: 1fr 1fr 1fr; }
+.form-grid--4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.counter--over { color: var(--danger) !important; }
+
+/* Affordances for the now-interactive bits. */
+.combo > .input,
+.combo > .search { cursor: pointer; }
+.combo > .input .input__field,
+.combo > .search input { cursor: text; }
+.tabs__tab[disabled] { cursor: not-allowed; opacity: 0.5; }
+.stepper__step--done { user-select: none; }
+
+/* ================================================================
+   Responsive — medium tablets (≤1024) and below
+   ================================================================ */
+@media (max-width: 1024px) {
+  .form-grid--label-1col { grid-template-columns: 1fr 1fr; }
+  .form-grid--4 { grid-template-columns: 1fr 1fr; }
+  .tpl__cols { grid-template-columns: 1fr; }
+  .tpl__side { order: -1; }
+  .tpl__split { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .form-grid,
+  .form-grid--label-1col,
+  .form-grid--2,
+  .form-grid--3,
+  .form-grid--4 {
+    grid-template-columns: 1fr;
+  }
+  .confirm__row,
+  .log__diff,
+  .space-spec {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .search-list li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  /* Stepper wraps so all steps remain visible. */
+  .stepper { flex-wrap: wrap; row-gap: 12px; }
+  .stepper__step { flex: 1 1 140px; }
+  /* Pager wraps and shrinks. */
+  .pager { flex-wrap: wrap; row-gap: 4px; }
+  .pager button, .pager span { padding: 0 8px; min-width: 28px; }
+  /* Modal / drawer fit within narrow viewports. */
+  .modal-stub { width: auto; max-width: 100%; }
+  .drawer-frame { min-width: 0; max-width: 100%; }
+  /* Chips wrap inside compact triggers. */
+  .chips { flex-wrap: wrap; }
+  /* Make horizontal-scroll tables play nicely with cell wrapping. */
+  .line-table th, .line-table td { white-space: nowrap; }
+  /* Section heads tighten further. */
+  .section__head { margin-bottom: 12px; }
+}
+
+@media (max-width: 480px) {
+  /* Header link bar wraps; pills already hidden by the existing rule. */
+  .app-nav { flex-wrap: wrap; row-gap: 0; }
+  .app-nav__link { padding: 6px 8px; font-size: 11px; }
+  .header-search { flex: 1 1 100%; }
+  .icon-toolbar .search { width: 100%; max-width: none; }
+
+  .btn-group { flex-wrap: wrap; }
+  .btn-group .btn { border-right: 1px solid var(--line); }
+  .row { gap: 6px; }
+  .chip { font-size: 11px; padding: 2px 6px; }
+  .pager button, .pager span { font-size: 11px; padding: 0 6px; min-width: 24px; }
+
+  /* Variant stage roomier on small screens. */
+  .variant__label { font-size: 10px; }
+  .variant__stage { padding: 10px; }
+  .field__label { font-size: 12px; }
+
+  /* Drawer/Modal previews don't need a fixed min-height that crowds out
+     the content list below. */
+  .drawer-frame { min-height: 320px; }
+
+  /* Avatar list spacing tightens. */
+  .people-list li { flex-wrap: wrap; row-gap: 4px; }
+}
