@@ -316,14 +316,74 @@
     });
   }
 
+  /* ---------- Icons grid ----------
+   * Renders the global ICON object as a clickable grid. Clicking a card
+   * copies a JS template-literal snippet (e.g. "${ICON.search}") to the
+   * clipboard and flashes a "Copied" indicator.
+   */
+  function renderIconsGrid() {
+    const grid = document.querySelector("[data-icons-grid]");
+    if (!grid) return;
+    const ICONS = window.ICON || {};
+    const names = Object.keys(ICONS).sort();
+    grid.innerHTML = names.map(name => {
+      const svg = ICONS[name].replace('class="icon"', 'class="icon-card__svg"');
+      return `<button type="button" class="icon-card" data-icon-name="${name}" aria-label="アイコン ${name} をコピー">
+        ${svg}
+        <span class="icon-card__name mono">${name}</span>
+      </button>`;
+    }).join("");
+    grid.addEventListener("click", e => {
+      const card = e.target.closest(".icon-card");
+      if (!card) return;
+      const name = card.dataset.iconName;
+      const snippet = "${ICON." + name + "}";
+      const fallback = ICONS[name] || "";
+      const copy = navigator.clipboard && navigator.clipboard.writeText
+        ? navigator.clipboard.writeText(snippet)
+        : Promise.reject(new Error("clipboard unavailable"));
+      copy.catch(() => {
+        // Fallback for non-clipboard environments: use a hidden textarea.
+        try {
+          const ta = document.createElement("textarea");
+          ta.value = snippet;
+          ta.setAttribute("readonly", "");
+          ta.style.position = "absolute";
+          ta.style.left = "-9999px";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+        } catch (_) { /* swallow */ }
+      });
+      card.classList.add("icon-card--copied");
+      setTimeout(() => card.classList.remove("icon-card--copied"), 1200);
+      // Suppress unused-warning by referencing fallback (kept for future use).
+      void fallback;
+    });
+
+    // Local search box dedicated to this section.
+    const filter = document.querySelector(".icon-grid__search");
+    if (filter) {
+      filter.addEventListener("input", () => {
+        const q = filter.value.trim().toLowerCase();
+        grid.querySelectorAll(".icon-card").forEach(c => {
+          c.style.display = !q || c.dataset.iconName.includes(q) ? "" : "none";
+        });
+      });
+    }
+  }
+
   function bindSearch() {
     const input = document.querySelector(".app-header .search input");
     if (!input) return;
     const cards = [...document.querySelectorAll("article.card")];
+    const iconCards = [...document.querySelectorAll(".icon-card")];
     input.addEventListener("input", () => {
       const q = input.value.trim().toLowerCase();
       if (!q) {
         cards.forEach(c => c.style.display = "");
+        iconCards.forEach(c => c.style.display = "");
         document.querySelectorAll("section.section").forEach(s => s.style.display = "");
         return;
       }
@@ -331,7 +391,15 @@
         const txt = c.textContent.toLowerCase();
         c.style.display = txt.includes(q) ? "" : "none";
       });
+      iconCards.forEach(c => {
+        c.style.display = c.dataset.iconName.includes(q) ? "" : "none";
+      });
       document.querySelectorAll("section.section").forEach(s => {
+        if (s.id === "icons") {
+          const visible = s.querySelector(".icon-card:not([style*='display: none'])");
+          s.style.display = visible ? "" : "none";
+          return;
+        }
         const visible = s.querySelector("article.card:not([style*='display: none'])");
         s.style.display = visible || s.id === "tokens" || s.id === "install" || s.id === "utils" || s.id === "mvp" ? "" : "none";
       });
@@ -357,6 +425,7 @@
       // anchor target the sidenav already points at.
       slot.innerHTML = renderCard(key, c);
     });
+    renderIconsGrid();
     normalizeFormControls(document);
     bindCombos(document);
     bindUsageTabs(document);

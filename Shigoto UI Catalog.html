@@ -27,6 +27,11 @@
     <span class="meta-pill meta-pill--accent">v0.6 alpha</span>
     <span class="meta-pill">71 components</span>
   </div>
+  <nav class="app-nav" aria-label="主要メニュー">
+    <a href="docs.html" class="app-nav__link">ドキュメント</a>
+    <a href="#components" class="app-nav__link app-nav__link--active">コンポーネント</a>
+    <a href="#icons" class="app-nav__link">アイコン</a>
+  </nav>
 </header>
 
 <div class="shell">
@@ -134,7 +139,7 @@
     <a href="#tpl-print">印刷プレビュー</a>
   </nav>
 
-  <main class="main">
+  <main class="main" id="components">
 
     <section class="section" id="button">
       <header class="section__head">
@@ -311,6 +316,20 @@
       <div data-component="bank-account" id="bank-account"></div>
       <div data-component="corp-number" id="corp-number"></div>
       <div data-component="seal" id="seal"></div>
+    </section>
+
+    <section class="section" id="icons">
+      <header class="section__head">
+        <h2 class="section__title">アイコン</h2>
+        <p class="section__lede">Shigoto UI 標準のストロークアイコン（16）。検索で絞り込み、カードをクリックするとスニペットがクリップボードにコピーされます。</p>
+      </header>
+      <div class="icon-toolbar">
+        <div class="search">
+          <span data-icon="search"></span>
+          <input class="icon-grid__search" placeholder="アイコン名で絞り込み（例: search / caret）" />
+        </div>
+      </div>
+      <div class="icon-grid" data-icons-grid></div>
     </section>
 
     <footer class="muted small" style="padding: 24px 0; border-top: 1px dashed var(--line); text-align: center;">
