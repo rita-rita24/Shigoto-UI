@@ -520,6 +520,177 @@
         pill.classList.add("rate-pill--active");
       });
     });
+
+    // Inline preset rows: a .row whose direct buttons are all .btn--sm and
+    // include both .btn--primary and .btn--ghost — treat as a segmented
+    // group (period-select / closing-day / fiscal-year quick presets / etc).
+    root.querySelectorAll(".row").forEach(row => {
+      const direct = [...row.querySelectorAll(":scope > button")].filter(b =>
+        b.classList.contains("btn--sm") &&
+        (b.classList.contains("btn--ghost") || b.classList.contains("btn--primary"))
+      );
+      if (direct.length < 2) return;
+      const hasPrimary = direct.some(b => b.classList.contains("btn--primary"));
+      const hasGhost = direct.some(b => b.classList.contains("btn--ghost"));
+      if (!hasPrimary || !hasGhost) return;
+      direct.forEach(b => {
+        b.addEventListener("click", () => {
+          direct.forEach(o => {
+            o.classList.remove("btn--primary");
+            o.classList.add("btn--ghost");
+          });
+          b.classList.remove("btn--ghost");
+          b.classList.add("btn--primary");
+        });
+      });
+    });
+
+    // Sort header cells: a `.th-sort` toggles between asc / desc / off and
+    // unselects sibling headers. The trailing indicator (sort icon / ↑ / ↓)
+    // is rewritten on every transition to match the new state.
+    const sortIcon = () => (window.ICON && window.ICON.sort) || "";
+    const stripIndicator = el => {
+      el.querySelectorAll(":scope > svg, :scope > span.mono").forEach(m => m.remove());
+      el.innerHTML = el.innerHTML.replace(/\s+$/, "");
+    };
+    root.querySelectorAll(".th-sort").forEach(span => {
+      span.style.cursor = "pointer";
+      const peers = span.closest("tr")
+        ? span.closest("tr").querySelectorAll(".th-sort")
+        : [span];
+      span.addEventListener("click", () => {
+        const wasActive = span.classList.contains("th-sort--active");
+        const wasDesc = span.classList.contains("th-sort--desc");
+        peers.forEach(p => {
+          p.classList.remove("th-sort--active", "th-sort--desc", "th-sort--secondary");
+          stripIndicator(p);
+          p.innerHTML += " " + sortIcon();
+        });
+        stripIndicator(span);
+        if (!wasActive) {
+          span.classList.add("th-sort--active");
+          span.innerHTML += ' <span class="mono">↑</span>';
+        } else if (!wasDesc) {
+          span.classList.add("th-sort--active", "th-sort--desc");
+          span.innerHTML += ' <span class="mono">↓</span>';
+        } else {
+          span.innerHTML += " " + sortIcon();
+        }
+      });
+    });
+  }
+
+  /* ---------- Calendar day selection ---------- */
+  function bindCalendar(root) {
+    root.querySelectorAll(".cal").forEach(cal => {
+      const days = cal.querySelectorAll(".cal__d");
+      days.forEach(d => {
+        // Dates outside the current month or marked as company-off stay inert.
+        if (d.classList.contains("cal__d--out") ||
+            d.classList.contains("cal__d--biz-off")) return;
+        d.style.cursor = "pointer";
+        d.addEventListener("click", () => {
+          days.forEach(o => o.classList.remove("cal__d--sel"));
+          d.classList.add("cal__d--sel");
+        });
+      });
+      // Month navigation buttons (前月 / 翌月) just animate a visual nudge so
+      // the user gets feedback. The mockup is single-month so we don't try to
+      // re-render days.
+      cal.querySelectorAll(".cal__head .btn--icon").forEach(btn => {
+        btn.addEventListener("click", () => {
+          cal.classList.add("cal--nudge");
+          setTimeout(() => cal.classList.remove("cal--nudge"), 180);
+        });
+      });
+    });
+  }
+
+  /* ---------- Breadcrumbs and demo anchors ----------
+   * The catalog should never navigate when the user clicks a placeholder
+   * `<a href="#">` link inside a card — it would scroll the catalog to the
+   * top. Prevent default for any in-card anchor whose href is a bare hash
+   * or stays on this page.
+   */
+  function bindInertAnchors(root) {
+    if (!root.body) return;
+    root.body.addEventListener("click", e => {
+      const a = e.target.closest("a");
+      if (!a) return;
+      // Only target anchors inside a component card (not the LP / nav / etc).
+      if (!a.closest("article.card")) return;
+      const href = a.getAttribute("href") || "";
+      // Allow anchor links that point to other pages (docs.html, icons.html
+      // etc.) and full URLs; only neutralize bare/hash demo links.
+      if (href === "" || href === "#" || href.startsWith("#")) {
+        e.preventDefault();
+      }
+    });
+    // Breadcrumbs are explicitly inert in the demo regardless of href —
+    // every link in `.bc` is decorative.
+    root.querySelectorAll(".bc a, .bc__more").forEach(el => {
+      el.addEventListener("click", e => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    });
+  }
+
+  /* ---------- Search box clear button ---------- */
+  function bindSearchClear(root) {
+    root.querySelectorAll(".search").forEach(box => {
+      const input = box.querySelector("input");
+      const clear = box.querySelector('.btn--icon[aria-label="クリア"]');
+      if (!input || !clear) return;
+      clear.addEventListener("click", e => {
+        e.stopPropagation();
+        input.value = "";
+        input.focus();
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+    });
+  }
+
+  /* ---------- Org tree expand/collapse ---------- */
+  function bindOrgTree(root) {
+    root.querySelectorAll(".tree__chev").forEach(btn => {
+      btn.addEventListener("click", e => {
+        e.stopPropagation();
+        const node = btn.closest(".tree__node");
+        if (!node) return;
+        const open = node.classList.toggle("tree__node--open");
+        btn.classList.toggle("tree__chev--closed", !open);
+        node.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    });
+  }
+
+  /* ---------- Permission matrix cell toggle ----------
+   * Click any non-header cell to toggle a check mark. Cells marked
+   * "inherited" (from a higher role) flash a notice but stay locked.
+   */
+  function bindPermMatrix(root) {
+    root.querySelectorAll("table.matrix tbody td").forEach(td => {
+      // Skip group separators and the row header.
+      if (td.closest("tr.matrix__group")) return;
+      if (td.matches("th")) return;
+      td.style.cursor = "pointer";
+      td.addEventListener("click", () => {
+        const inherited = td.querySelector(".cell-yes--inherit");
+        if (inherited) {
+          // Inherited cells aren't directly editable.
+          td.classList.add("matrix__cell--locked");
+          setTimeout(() => td.classList.remove("matrix__cell--locked"), 250);
+          return;
+        }
+        const has = td.querySelector(".cell-yes");
+        if (has) {
+          td.innerHTML = "";
+        } else {
+          td.innerHTML = `<span class="cell-yes">${(window.ICON && window.ICON.check) || "✓"}</span>`;
+        }
+      });
+    });
   }
 
   /* ---------- Stepper: clicking a done step makes it current ---------- */
@@ -563,8 +734,10 @@
         '.btn--icon[aria-label="閉じる"], .btn--icon[aria-label="クリア"], button[aria-label="閉じる"], button[aria-label="クリア"]'
       );
       if (!closeBtn) return;
+      // Prefer the most specific dismissable ancestor; the drawer's aside
+      // should close in place rather than tearing down the entire frame.
       const host = closeBtn.closest(
-        ".alert, .banner, .toast, .modal-stub, .picker-card, .file-row, .drawer-frame"
+        ".alert, .banner, .toast, .modal-stub, .picker-card, .file-row, .drawer, .drawer-frame"
       );
       if (host) {
         host.style.transition = "opacity 0.15s ease";
@@ -744,6 +917,11 @@
     bindLineItem(document);
     bindActiveToggles(document);
     bindStepper(document);
+    bindCalendar(document);
+    bindOrgTree(document);
+    bindPermMatrix(document);
+    bindSearchClear(document);
+    bindInertAnchors(document);
     bindDismiss(document);
     bindSearch();
   }
