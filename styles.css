@@ -282,12 +282,23 @@ textarea.input {
 .check, .radio {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 13px; color: var(--ink);
+  vertical-align: middle;
 }
 label.check, label.radio { cursor: pointer; }
+label.check:has(input:disabled),
+label.radio:has(input:disabled),
+label.radio-rich:has(input:disabled),
+label.check-rich:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 .check__box, .radio__dot {
   display: inline-flex; align-items: center; justify-content: center;
   width: 16px; height: 16px; border: 1px solid var(--ink-2);
   background: var(--paper);
+  flex-shrink: 0;
+  line-height: 1;
+  box-sizing: border-box;
 }
 .check__box { border-radius: var(--r-sm); }
 .radio__dot { border-radius: 50%; }
@@ -308,10 +319,22 @@ label.check, label.radio { cursor: pointer; }
 }
 .check:has(input:checked) .check__box::before,
 .check.checked .check__box::before { content: "✓"; }
-.check:has(input:indeterminate) .check__box::before { content: ""; }
+/* Indeterminate: solid accent box with white dash drawn via ::before. */
 .check:has(input:indeterminate) .check__box {
-  background: var(--accent); border-color: var(--accent);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
 }
+.check:has(input:indeterminate) .check__box::before {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 2px;
+  background: var(--paper);
+  border-radius: 1px;
+}
+/* Hide any stale .check__dash markup once normalization has run. */
+.check:has(input:indeterminate) .check__box .check__dash { display: none; }
 
 .radio:has(input:checked) .radio__dot::before,
 .radio.checked .radio__dot::before {

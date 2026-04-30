@@ -116,6 +116,7 @@
       const isChecked = span.classList.contains("checked");
       const isMixed = span.classList.contains("check--mixed") ||
                       span.classList.contains("tree__check--mixed");
+      const isDisabled = /opacity:\s*0\.5/.test(span.style.cssText || "");
       const label = document.createElement("label");
       label.className = span.className;
       label.classList.remove("checked");
@@ -124,6 +125,7 @@
       input.type = "checkbox";
       input.className = "sgt-native";
       if (isChecked && !isMixed) input.checked = true;
+      if (isDisabled) input.disabled = true;
       while (span.firstChild) label.appendChild(span.firstChild);
       // CSS draws the check/dash glyph; clear any pre-baked icon markup.
       const box = label.querySelector(".check__box");
@@ -164,6 +166,7 @@
 
     root.querySelectorAll("span.radio").forEach(span => {
       const isChecked = span.classList.contains("checked");
+      const isDisabled = /opacity:\s*0\.5/.test(span.style.cssText || "");
       const label = document.createElement("label");
       label.className = span.className;
       label.classList.remove("checked");
@@ -173,6 +176,7 @@
       input.name = nameForGroup(span.parentElement);
       input.className = "sgt-native";
       if (isChecked) input.checked = true;
+      if (isDisabled) input.disabled = true;
       while (span.firstChild) label.appendChild(span.firstChild);
       label.insertBefore(input, label.firstChild);
       span.replaceWith(label);
@@ -181,12 +185,14 @@
     root.querySelectorAll("label.radio-rich").forEach(label => {
       if (label.querySelector('input[type="radio"]')) return;
       const isChecked = label.classList.contains("checked");
+      const isDisabled = /opacity:\s*0\.5/.test(label.style.cssText || "");
       label.classList.remove("checked");
       const input = document.createElement("input");
       input.type = "radio";
       input.name = nameForGroup(label.parentElement);
       input.className = "sgt-native";
       if (isChecked) input.checked = true;
+      if (isDisabled) input.disabled = true;
       label.insertBefore(input, label.firstChild);
     });
 
@@ -228,6 +234,44 @@
       if (wrap.classList.contains("input--error")) field.setAttribute("aria-invalid", "true");
       if (isNum) field.inputMode = "numeric";
       value.replaceWith(field);
+    });
+
+    // ---- Select-all parents: a .check.check--mixed acts as the parent for
+    // peer .check inputs. Clicking the parent toggles all peers; child changes
+    // recompute the parent's checked / indeterminate state.
+    root.querySelectorAll("label.check.check--mixed").forEach(parent => {
+      const parentInput = parent.querySelector('input[type="checkbox"]');
+      if (!parentInput) return;
+      // Scope: the table's tbody when the parent sits inside a thead, or the
+      // common ancestor that holds sibling .check labels otherwise.
+      const table = parent.closest("table");
+      const scope = table || parent.parentElement.parentElement || parent.parentElement;
+      const peers = () => [...scope.querySelectorAll("label.check input[type='checkbox']")]
+        .filter(i => i !== parentInput && !i.closest("label").classList.contains("check--mixed"));
+      const sync = () => {
+        const list = peers();
+        if (!list.length) return;
+        const checked = list.filter(i => i.checked).length;
+        if (checked === 0) {
+          parentInput.indeterminate = false;
+          parentInput.checked = false;
+        } else if (checked === list.length) {
+          parentInput.indeterminate = false;
+          parentInput.checked = true;
+        } else {
+          parentInput.indeterminate = true;
+          parentInput.checked = false;
+        }
+      };
+      parentInput.addEventListener("click", () => {
+        // After the click event, parentInput.checked reflects the new state.
+        const target = parentInput.checked;
+        peers().forEach(i => { if (!i.disabled) i.checked = target; });
+        parentInput.indeterminate = false;
+      });
+      peers().forEach(child => {
+        child.addEventListener("change", sync);
+      });
     });
 
     // ---- Textarea stubs: <div class="textarea-stub">…</div> -> <textarea>
