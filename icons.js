@@ -273,7 +273,7 @@ const ICON = {
   sidebar:           `<svg ${ICON_BASE}><rect x="2.5" y="3" width="11" height="10"/><line x1="6.5" y1="3" x2="6.5" y2="13"/><line x1="4" y1="6" x2="5" y2="6"/><line x1="4" y1="8" x2="5" y2="8"/><line x1="4" y1="10" x2="5" y2="10"/></svg>`,
   "layout-grid":     `<svg ${ICON_BASE}><rect x="2.5" y="3" width="4.5" height="4.5"/><rect x="9" y="3" width="4.5" height="4.5"/><rect x="2.5" y="9" width="4.5" height="4"/><rect x="9" y="9" width="4.5" height="4"/></svg>`,
 
-  /* ===== 業務固有（追加） ===== */
+  /* ===== 書類・帳簿・印影 ===== */
   receipt:           `<svg ${ICON_BASE}><path d="M3.5 2v12l1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5V2z"/><line x1="5.5" y1="5.5" x2="10.5" y2="5.5"/><line x1="5.5" y1="8" x2="10.5" y2="8"/><line x1="5.5" y1="10.5" x2="9" y2="10.5"/></svg>`,
   stamp:             `<svg ${ICON_BASE}><circle cx="8" cy="6" r="3"/><line x1="2.5" y1="13.5" x2="13.5" y2="13.5"/><path d="M5.5 9c-1 0.5-2.5 1-2.5 2.5h10c0-1.5-1.5-2-2.5-2.5"/></svg>`,
   notebook:          `<svg ${ICON_BASE}><rect x="3" y="2.5" width="10" height="11" rx="0.5"/><line x1="6" y1="2.5" x2="6" y2="13.5"/><line x1="8" y1="5" x2="11" y2="5"/><line x1="8" y1="7.5" x2="11" y2="7.5"/><line x1="8" y1="10" x2="10" y2="10"/></svg>`,
@@ -283,14 +283,14 @@ const ICON = {
   "bookmark-check":  `<svg ${ICON_BASE}><path d="M4 2.5v11l4-3 4 3v-11z"/><polyline points="6,7 7.5,8.5 10,5.5"/></svg>`,
   "bookmark-plus":   `<svg ${ICON_BASE}><path d="M4 2.5v11l4-3 4 3v-11z"/><line x1="8" y1="5.5" x2="8" y2="9"/><line x1="6" y1="7" x2="10" y2="7"/></svg>`,
 
-  /* ===== コミュニケーション（追加） ===== */
+  /* ===== メール・通知の状態 ===== */
   "inbox-arrow-down": `<svg ${ICON_BASE}><path d="M2 9.5L4 4h8l2 5.5V13H2z"/><polyline points="2,9.5 6,9.5 7,11 9,11 10,9.5 14,9.5"/><line x1="8" y1="2" x2="8" y2="7"/><polyline points="6,5 8,7 10,5"/></svg>`,
   "inbox-plus":      `<svg ${ICON_BASE}><path d="M2 9.5L4 4h8l2 5.5V13H2z"/><polyline points="2,9.5 6,9.5 7,11 9,11 10,9.5 14,9.5"/><line x1="11" y1="2.5" x2="11" y2="6.5"/><line x1="9" y1="4.5" x2="13" y2="4.5"/></svg>`,
   "mail-check":      `<svg ${ICON_BASE}><path d="M2 4.5h12V11H2z" /><polyline points="2.5,5 8,9 13.5,5"/><polyline points="9,13 10.5,14.5 14,11"/></svg>`,
   "mail-x":          `<svg ${ICON_BASE}><path d="M2 4.5h12V10H2z"/><polyline points="2.5,5 8,9 13.5,5"/><line x1="9" y1="11" x2="14" y2="14"/><line x1="14" y1="11" x2="9" y2="14"/></svg>`,
   "bell-plus":       `<svg ${ICON_BASE}><path d="M4 11V8a4 4 0 0 1 8 0v3l1.2 1.2H2.8z"/><path d="M6.5 13.2a1.5 1.5 0 0 0 3 0"/><line x1="11.5" y1="2" x2="11.5" y2="5"/><line x1="10" y1="3.5" x2="13" y2="3.5"/></svg>`,
 
-  /* ===== 表示・操作（追加） ===== */
+  /* ===== ビュー操作 ／ 制作ツール ===== */
   maximize:          `<svg ${ICON_BASE}><polyline points="3,6.5 3,3 6.5,3"/><polyline points="9.5,3 13,3 13,6.5"/><polyline points="13,9.5 13,13 9.5,13"/><polyline points="6.5,13 3,13 3,9.5"/></svg>`,
   minimize:          `<svg ${ICON_BASE}><polyline points="6.5,3 6.5,6.5 3,6.5"/><polyline points="9.5,6.5 13,6.5 13,3"/><polyline points="13,9.5 9.5,9.5 9.5,13"/><polyline points="3,9.5 6.5,9.5 6.5,13"/></svg>`,
   focus:             `<svg ${ICON_BASE}><circle cx="8" cy="8" r="2"/><line x1="8" y1="2" x2="8" y2="4"/><line x1="8" y1="12" x2="8" y2="14"/><line x1="2" y1="8" x2="4" y2="8"/><line x1="12" y1="8" x2="14" y2="8"/></svg>`,
@@ -324,7 +324,7 @@ const ICON_GROUPS = [
   { id: "arrow",    label: "矢印・キャレット",      names: ["arrow", "arrow-left", "arrow-up", "arrow-down", "caret", "caret-up", "caret-left", "caret-right"] },
   { id: "action",   label: "アクション",            names: ["search", "filter", "sort", "refresh", "edit", "trash", "copy", "save", "send", "share", "link", "attach", "download", "upload", "print"] },
   { id: "io",       label: "入出力・記号",          names: ["plus", "minus", "close", "check", "drag"] },
-  { id: "status",   label: "ステータス",            names: ["warn", "info", "check-circle", "x-circle", "bell", "star", "bookmark"] },
+  { id: "status",   label: "ステータス",            names: ["warn", "info", "check-circle", "x-circle", "bell", "star", "bookmark", "bookmark-check", "bookmark-plus"] },
   { id: "biz",      label: "業務アイテム",          names: ["yen", "calendar", "clock", "tag", "folder", "file", "credit-card", "database", "building", "globe"] },
   { id: "people",   label: "ユーザ・コミュニケーション", names: ["user", "users", "mail", "phone", "chat"] },
   { id: "perm",     label: "設定・権限",            names: ["settings", "lock", "unlock", "eye", "eye-off"] },
@@ -346,9 +346,10 @@ const ICON_GROUPS = [
   { id: "time",     label: "時間",                  names: ["timer", "hourglass", "alarm", "calendar-check", "calendar-x", "calendar-plus", "calendar-clock"] },
   { id: "nav3",     label: "ナビ斜め・コーナー",    names: ["arrow-up-right", "arrow-down-right", "arrow-up-left", "arrow-down-left", "corner-up-right", "corner-down-right", "corner-up-left", "corner-down-left"] },
   { id: "layout",   label: "レイアウト・パネル",    names: ["columns", "rows", "panel-left", "panel-right", "panel-top", "panel-bottom", "sidebar", "layout-grid"] },
-  { id: "biz3",     label: "業務固有（追加）",      names: ["receipt", "stamp", "notebook", "book", "signature", "ledger", "bookmark-check", "bookmark-plus"] },
-  { id: "comms2",   label: "通信（追加）",          names: ["inbox-arrow-down", "inbox-plus", "mail-check", "mail-x", "bell-plus"] },
-  { id: "ops",      label: "表示・操作（追加）",    names: ["maximize", "minimize", "focus", "scan-line", "sliders", "ruler", "crop", "rotate-cw", "rotate-ccw", "magnet"] },
+  { id: "biz3",     label: "書類・帳簿・印影",      names: ["receipt", "stamp", "notebook", "book", "signature", "ledger"] },
+  { id: "comms2",   label: "メール・通知の状態",    names: ["inbox-arrow-down", "inbox-plus", "mail-check", "mail-x", "bell-plus"] },
+  { id: "view-ops", label: "ビュー操作",            names: ["maximize", "minimize", "focus", "scan-line"] },
+  { id: "tools",    label: "制作ツール",            names: ["sliders", "ruler", "crop", "rotate-cw", "rotate-ccw", "magnet"] },
   { id: "label",    label: "フィルタ・ラベル",      names: ["filter-x", "tag-plus", "tag-x", "bookmark-x", "pin-off"] },
   { id: "currency", label: "通貨",                  names: ["dollar", "euro", "pound", "bitcoin"] }
 ];
