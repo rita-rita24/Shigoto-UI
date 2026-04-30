@@ -12,6 +12,26 @@
   padding: 14px 28px;
   display: flex; align-items: center; gap: 20px;
 }
+.app-nav {
+  max-width: 1480px; margin: 0 auto;
+  padding: 0 28px;
+  display: flex; gap: 4px;
+  border-top: 1px solid var(--line);
+}
+.app-nav__link {
+  padding: 10px 14px;
+  font-size: 13px; color: var(--muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.app-nav__link:hover { color: var(--ink); }
+.app-nav__link--active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
 .brand { display: flex; align-items: baseline; gap: 12px; }
 .brand__mark {
   font-family: var(--mono); font-weight: 700;
@@ -133,15 +153,6 @@
   letter-spacing: 0.08em; padding: 4px 0;
 }
 .card > .accept { margin: 0 20px 20px; }
-.priority {
-  font-family: var(--mono); font-size: 10px;
-  letter-spacing: 0.08em; padding: 3px 8px;
-  border-radius: var(--r-sm); border: 1px solid var(--line);
-  align-self: start; white-space: nowrap;
-}
-.priority--must { background: var(--accent); color: var(--paper); border-color: var(--accent); }
-.priority--should { background: var(--bg-2); color: var(--ink); }
-.priority--could { background: transparent; color: var(--muted); border-style: dashed; }
 
 .card__body { padding: 20px; }
 
@@ -216,12 +227,51 @@
   font-size: 12px; min-width: 18px;
   color: var(--muted); padding: 0 6px; white-space: nowrap;
   font-family: inherit;
+  line-height: 1;
+  align-self: stretch;
+}
+.input__prefix .icon, .input__suffix .icon {
+  /* Drop any inherited inline offsets so the icon sits dead-center. */
+  vertical-align: middle; position: static;
 }
 .input__prefix.mono, .input__suffix.mono { font-family: var(--mono); }
-.input__prefix { border-right: 1px dashed var(--line); margin-right: 8px; }
-.input__suffix { border-left: 1px dashed var(--line); margin-left: 8px; }
+.input__prefix { border-right: 1px dashed var(--line); margin-right: 8px; padding-left: 0; }
+.input__suffix { border-left: 1px dashed var(--line); margin-left: 8px; padding-right: 0; }
 .input__value { flex: 1; min-width: 0; }
 .input__value--num { font-variant-numeric: tabular-nums; text-align: right; font-family: var(--mono); }
+
+/* Real <input>/<textarea> embedded inside a .input/.textarea wrapper.
+ * The wrapper supplies the border/padding; the field itself is borderless
+ * and inherits typography from the wrapper. */
+.input > .input__field,
+.textarea > .input__field {
+  flex: 1; min-width: 0;
+  border: 0; outline: none; background: transparent;
+  font: inherit; color: inherit;
+  padding: 0; margin: 0;
+  min-height: 0;
+}
+.input > textarea.input__field,
+.textarea > textarea.input__field {
+  resize: vertical; min-height: 64px; line-height: 1.6;
+}
+.input__field--num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  font-family: var(--mono);
+}
+.input:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+.input--error:focus-within {
+  outline-color: var(--danger);
+}
+.input > .input__field:disabled,
+.input > .input__field[readonly] {
+  cursor: not-allowed;
+}
 .input__caret {
   display: inline-block; width: 1px; height: 14px; background: var(--ink);
   animation: blink 1s steps(2) infinite; margin-left: 2px;
@@ -238,12 +288,23 @@ textarea.input {
 .check, .radio {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 13px; color: var(--ink);
+  vertical-align: middle;
 }
 label.check, label.radio { cursor: pointer; }
+label.check:has(input:disabled),
+label.radio:has(input:disabled),
+label.radio-rich:has(input:disabled),
+label.check-rich:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 .check__box, .radio__dot {
   display: inline-flex; align-items: center; justify-content: center;
   width: 16px; height: 16px; border: 1px solid var(--ink-2);
   background: var(--paper);
+  flex-shrink: 0;
+  line-height: 1;
+  box-sizing: border-box;
 }
 .check__box { border-radius: var(--r-sm); }
 .radio__dot { border-radius: 50%; }
@@ -264,10 +325,22 @@ label.check, label.radio { cursor: pointer; }
 }
 .check:has(input:checked) .check__box::before,
 .check.checked .check__box::before { content: "✓"; }
-.check:has(input:indeterminate) .check__box::before { content: ""; }
+/* Indeterminate: solid accent box with white dash drawn via ::before. */
 .check:has(input:indeterminate) .check__box {
-  background: var(--accent); border-color: var(--accent);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
 }
+.check:has(input:indeterminate) .check__box::before {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 2px;
+  background: var(--paper);
+  border-radius: 1px;
+}
+/* Hide any stale .check__dash markup once normalization has run. */
+.check:has(input:indeterminate) .check__box .check__dash { display: none; }
 
 .radio:has(input:checked) .radio__dot::before,
 .radio.checked .radio__dot::before {
@@ -703,11 +776,89 @@ kbd {
 }
 
 /* responsive */
+/* ====== Responsive ======
+ * Target three breakpoints: tablet (≤1024), mobile-large (≤768), mobile (≤480).
+ * The sidenav collapses early; header items stack; cards lose horizontal
+ * padding; tables become horizontally scrollable rather than overflowing. */
 @media (max-width: 1024px) {
   .shell { grid-template-columns: 1fr; }
   .sidenav { display: none; }
   .main { padding: 24px 20px 80px; }
   .mvp-grid, .grid-2 { grid-template-columns: 1fr; }
+  .app-header__inner { padding: 12px 16px; gap: 12px; flex-wrap: wrap; }
+  .app-nav { padding: 0 16px; overflow-x: auto; }
+}
+
+@media (max-width: 768px) {
+  .app-header__inner {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+  .app-header__inner .meta-pill { display: none; }
+  .brand__sub, .brand__ja { display: none; }
+  .header-search { flex: 1 1 100%; order: 2; }
+  .app-nav { padding: 0 8px; }
+  .app-nav__link { padding: 8px 10px; font-size: 12px; white-space: nowrap; }
+
+  .main { padding: 16px 12px 60px; }
+  .section { margin-bottom: 40px; }
+  .section__title { font-size: 18px; }
+  .section__lede { font-size: 13px; }
+
+  .card { margin-bottom: 16px; }
+  .card__head { padding: 12px 14px; }
+  .card__title { font-size: 15px; }
+  .card__tag { font-size: 11px; }
+  .card__body { padding: 14px; }
+  .card__usage { margin: 10px 14px 14px; }
+
+  .variant__stage { padding: 12px; }
+  .variants { grid-template-columns: 1fr !important; }
+
+  /* Tables become horizontally scrollable instead of overflowing the page. */
+  .table, .btn-grid, .line-table, .data-table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Multi-column grids collapse to single column. */
+  .row { flex-wrap: wrap; gap: 8px; }
+  .grid-2, .grid-3, .grid-4, .mvp-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .a4__meta { grid-template-columns: 1fr; }
+
+  /* Icons grid: smaller cells. */
+  .icon-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+  .icon-card { padding: 12px 6px; }
+
+  /* Docs page: narrower padding. */
+  .docs { padding: 24px 16px; font-size: 13px; }
+  .docs__title { font-size: 24px; }
+  .docs__h2 { font-size: 18px; }
+  .docs__code { padding: 10px 12px; font-size: 12px; }
+
+  /* Buttons stay tappable but lose unnecessary chrome. */
+  .btn { padding: 8px 12px; }
+  .btn--sm { padding: 6px 10px; }
+}
+
+@media (max-width: 480px) {
+  .app-header__inner { padding: 8px 12px; }
+  .brand__mark { font-size: 16px; }
+  .header-search input { font-size: 12px; }
+  .app-nav__link { padding: 8px 6px; font-size: 11px; }
+
+  .main { padding: 12px 8px 48px; }
+  .card__head { padding: 10px 12px; }
+  .card__body { padding: 12px; }
+  .section__title { font-size: 16px; }
+
+  .field__label, .hf__label { font-size: 12px; }
+  .row { gap: 6px; }
+  .input { padding: 6px 8px; font-size: 12px; }
 }
 
 
@@ -756,7 +907,12 @@ kbd {
 .btn--focus { outline: 2px solid var(--accent); outline-offset: 2px; }
 .btn--loading { opacity: 0.85; pointer-events: none; }
 .btn--lg { font-size: 14px; padding: 8px 18px; min-height: 38px; }
-.btn .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: sp 0.8s linear infinite; vertical-align: -2px; margin-right: 6px; }
+.btn .spinner {
+  display: inline-block; width: 12px; height: 12px;
+  border: 2px solid currentColor; border-top-color: transparent;
+  border-radius: 50%; animation: sp 0.8s linear infinite;
+  vertical-align: middle;
+}
 @keyframes sp { to { transform: rotate(360deg); } }
 
 /* ---------- Card example ---------- */
@@ -834,14 +990,24 @@ kbd {
 
 /* Shigoto UI — v4 styles: expanded variants, SVG icons, new components */
 
-/* ====== ICON BASE ====== */
+/* ====== ICON BASE ======
+ * SVGs always use viewBox="0 0 16 16". The host scales them to a fixed
+ * inline-block square; flex parents (buttons, prefixes, alerts…) center
+ * them via align-items, so vertical-align is set to middle for the rare
+ * inline-only contexts. */
 .icon {
   width: 14px; height: 14px;
   display: inline-block; flex-shrink: 0;
-  vertical-align: -2px;
+  vertical-align: middle;
+  /* Reset any default offsets that misalign the icon with adjacent text. */
+  position: relative; top: 0; left: 0;
+  overflow: visible;
 }
-.btn .icon { margin-right: 2px; }
-.btn--icon { padding: 6px; min-width: auto; min-height: 28px; }
+.btn .icon { margin: 0; }
+.btn--icon {
+  padding: 6px; min-width: 32px; min-height: 32px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
 .btn--icon .icon { margin: 0; }
 
 .search .icon { width: 14px; height: 14px; color: var(--muted); }
@@ -930,17 +1096,23 @@ kbd {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ====== TEXTAREA STUB ====== */
-.textarea-stub {
+textarea.textarea-stub, .textarea-stub {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   border: 1px solid var(--line);
   background: #fff;
   border-radius: 3px;
   padding: 8px 10px;
+  font-family: var(--sans);
   font-size: 13px;
   line-height: 1.5;
   white-space: pre-wrap;
   min-height: 64px;
   color: var(--ink);
+  resize: vertical;
 }
+textarea.textarea-stub:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
 .textarea-stub--error { border-color: var(--danger); background: #fff9f9; }
 
 /* ====== RICH RADIO / CHECK CARDS ====== */
@@ -1235,15 +1407,22 @@ kbd {
 .alert {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 10px 14px;
+  gap: 12px;
+  padding: 12px 14px;
   border: 1px solid var(--line);
   border-left: 3px solid var(--muted);
   border-radius: 3px;
   background: #fff;
   font-size: 13px;
+  line-height: 1.55;
 }
-.alert > .icon { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; }
+.alert > .icon {
+  width: 18px; height: 18px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  position: static;
+  vertical-align: middle;
+}
 .alert > div { flex: 1; }
 .alert .btn { align-self: center; }
 .alert--info { border-left-color: var(--accent); background: #f4f8ff; }
@@ -1265,7 +1444,7 @@ kbd {
   display: flex;
   flex-direction: column;
 }
-.modal-stub--danger { border-top: 3px solid var(--danger); }
+.modal-stub--danger { border-color: var(--danger); }
 .modal__head {
   display: flex; justify-content: space-between; align-items: center;
   padding: 12px 16px;
@@ -1910,7 +2089,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 1px; }
   max-width: 520px;
   box-shadow: var(--shadow-md);
 }
-.modal-stub--danger { border-top: 3px solid var(--danger); }
+.modal-stub--danger { border-color: var(--danger); }
 .modal-stub .modal__head {
   display: flex; align-items: center; justify-content: space-between;
   padding: 12px 16px;
@@ -2256,8 +2435,15 @@ tr.sel.zebra { background: #e6efff; }
 @keyframes spinner { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
 .btn--loading { opacity: .85; pointer-events: none; }
-.btn--loading .spinner { width: 12px; height: 12px; border-color: rgba(255,255,255,.4); border-top-color: #fff; }
-.btn--ghost.btn--loading .spinner { border-color: var(--line); border-top-color: var(--accent); }
+/* Spinner inherits the button's text color so it's visible on every variant
+ * (primary / secondary / ghost / danger). */
+.btn--loading .spinner {
+  width: 12px; height: 12px;
+  border-color: currentColor;
+  border-top-color: transparent;
+  opacity: 0.85;
+  margin-right: 4px;
+}
 .overlay-frame {
   position: relative; min-height: 200px;
   border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
@@ -2577,3 +2763,64 @@ tr.sel.zebra { background: #e6efff; }
 .seal--sm { width: 56px; height: 56px; font-size: 13px; border-width: 2px; }
 .seal-row { display: flex; gap: 12px; justify-content: center; }
 .seal-row__cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+
+/* ====== Icons grid ====== */
+.icon-toolbar { margin-bottom: 16px; max-width: 480px; }
+.icon-toolbar .search { width: 100%; }
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+.icon-card {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; padding: 16px 8px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font: inherit; color: inherit;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.icon-card:hover { border-color: var(--accent); background: var(--accent-soft, #f4f8ff); }
+.icon-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.icon-card__svg { width: 24px; height: 24px; color: var(--ink); }
+.icon-card__name { font-size: 11px; color: var(--muted); }
+.icon-card--copied {
+  border-color: var(--accent);
+  background: var(--accent-soft, #f4f8ff);
+}
+.icon-card--copied::after {
+  content: "Copied";
+  position: absolute; top: 4px; right: 4px;
+  font-family: var(--mono); font-size: 10px;
+  padding: 2px 6px; border-radius: 999px;
+  background: var(--accent); color: var(--paper);
+}
+
+/* ====== Docs page ====== */
+.docs {
+  max-width: 880px; margin: 0 auto;
+  padding: 40px 28px;
+  font-size: 14px; line-height: 1.7;
+  color: var(--ink);
+}
+.docs__section { margin-bottom: 48px; }
+.docs__title { font-size: 32px; margin: 0 0 12px; letter-spacing: -0.01em; }
+.docs__lede { color: var(--muted); font-size: 15px; }
+.docs__h2 {
+  font-size: 22px; margin: 0 0 16px;
+  border-bottom: 1px solid var(--line); padding-bottom: 8px;
+}
+.docs__h3 { font-size: 16px; margin: 24px 0 8px; }
+.docs__code {
+  background: var(--bg); border: 1px solid var(--line); border-radius: var(--r-sm);
+  padding: 12px 16px; font-family: var(--mono); font-size: 13px;
+  overflow-x: auto; line-height: 1.5;
+  margin: 8px 0 16px;
+}
+.docs__code code { font-family: inherit; }
+.docs__list { padding-left: 24px; }
+.docs__list li { margin: 4px 0; }
+.docs a { color: var(--accent); }

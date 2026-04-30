@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shigoto UI — ドキュメント</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=8" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-header__inner">
+    <div class="brand">
+      <span class="brand__mark">shigoto-ui</span>
+      <span class="brand__sub">Documentation</span>
+      <span class="brand__ja">／ 国産業務系UIライブラリ</span>
+    </div>
+    <div class="app-header__spacer"></div>
+    <span class="meta-pill meta-pill--accent">v0.6 alpha</span>
+  </div>
+  <nav class="app-nav" aria-label="主要メニュー">
+    <a href="docs.html" class="app-nav__link app-nav__link--active">ドキュメント</a>
+    <a href="Shigoto UI Catalog.html#components" class="app-nav__link">コンポーネント</a>
+    <a href="Shigoto UI Catalog.html#icons" class="app-nav__link">アイコン</a>
+  </nav>
+</header>
+
+<main class="docs">
+  <section class="docs__section">
+    <h1 class="docs__title">Shigoto UI</h1>
+    <p class="docs__lede">
+      日本の業務系 SaaS のための Web Components 主体の UI ライブラリ。
+      帳票・申請・承認・マスタ管理など、定型業務 UI を最短距離で組み立てるための部品が揃っています。
+    </p>
+  </section>
+
+  <section class="docs__section">
+    <h2 class="docs__h2">導入</h2>
+    <h3 class="docs__h3">npm</h3>
+    <pre class="docs__code"><code>npm install @shigoto-ui/elements</code></pre>
+    <p>使用したい部品だけ個別にインポートします（ツリーシェイク対応）。</p>
+    <pre class="docs__code"><code>import '@shigoto-ui/elements/button';
+import '@shigoto-ui/elements/money-input';</code></pre>
+
+    <h3 class="docs__h3">CDN</h3>
+    <pre class="docs__code"><code>&lt;link rel="stylesheet" href="https://unpkg.com/@shigoto-ui/elements/dist/shigoto-ui.css" /&gt;
+&lt;script type="module" src="https://unpkg.com/@shigoto-ui/elements"&gt;&lt;/script&gt;</code></pre>
+  </section>
+
+  <section class="docs__section">
+    <h2 class="docs__h2">基本セットアップ</h2>
+    <p>
+      ルート要素に <code class="mono">data-sgt-theme="light"</code> を設定し、
+      CSS 変数で配色・余白・フォントを上書きできます。
+    </p>
+    <pre class="docs__code"><code>:root {
+  --accent: #2b63e0;     /* 主要色 */
+  --ink: #0f172a;        /* 文字色 */
+  --paper: #ffffff;      /* 背景色 */
+  --line: #e2e8f0;       /* 罫線 */
+  --r-sm: 3px;           /* 角丸（小） */
+}</code></pre>
+  </section>
+
+  <section class="docs__section">
+    <h2 class="docs__h2">フレームワーク連携</h2>
+    <ul class="docs__list">
+      <li><strong>HTML / 素のJS</strong>: <code class="mono">@shigoto-ui/elements</code> を読み込めばそのまま使用可</li>
+      <li><strong>React</strong>: <code class="mono">@shigoto-ui/react</code> がラッパを提供</li>
+      <li><strong>Vue</strong>: <code class="mono">@shigoto-ui/vue</code> でテンプレ統合</li>
+    </ul>
+    <p>各コンポーネントの使用例は<a href="Shigoto UI Catalog.html#components">コンポーネントカタログ</a>を参照してください。</p>
+  </section>
+
+  <section class="docs__section">
+    <h2 class="docs__h2">リソース</h2>
+    <ul class="docs__list">
+      <li><a href="Shigoto UI Catalog.html#components">コンポーネントカタログ</a> — 71 種類の業務 UI 部品</li>
+      <li><a href="Shigoto UI Catalog.html#icons">アイコン</a> — 16 種類の標準ストロークアイコン</li>
+    </ul>
+  </section>
+
+  <footer class="muted small" style="padding: 24px 0; border-top: 1px dashed var(--line); text-align: center; margin-top: 40px;">
+    Shigoto UI — Web Components first / 国産業務系UIライブラリ ／ ワイヤーフレーム v0.6
+  </footer>
+</main>
+
+</body>
+</html>
