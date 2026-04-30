@@ -157,6 +157,46 @@
       if (span.style.cssText) input.style.cssText = span.style.cssText;
       span.replaceWith(input);
     });
+
+    // ---- Text inputs: every .input wrapper containing .input__value becomes
+    // a real <input> (or <textarea> when wrapped in .textarea). The wrapper
+    // keeps its prefix/suffix decorations.
+    root.querySelectorAll(".input, .textarea").forEach(wrap => {
+      const value = wrap.querySelector(":scope > .input__value");
+      if (!value) return;
+      // Strip any visual caret markers; the real <input> draws its own.
+      value.querySelectorAll(".input__caret").forEach(c => c.remove());
+      const nestedPh = value.querySelector(".input__placeholder");
+      const isPh = value.classList.contains("input__placeholder");
+      const isNum = value.classList.contains("input__value--num");
+      const isMono = value.classList.contains("mono") || isNum;
+      const text = (nestedPh ? value.textContent.replace(nestedPh.textContent, "") : value.textContent).trim();
+      const placeholder = nestedPh ? nestedPh.textContent.trim()
+                        : isPh    ? text
+                        : "";
+      const isTextarea = wrap.classList.contains("textarea");
+      const field = document.createElement(isTextarea ? "textarea" : "input");
+      if (!isTextarea) field.type = "text";
+      field.className = "input__field" + (isNum ? " input__field--num" : "") + (isMono ? " mono" : "");
+      if (!isPh) field.value = text;
+      if (placeholder) field.placeholder = placeholder;
+      if (wrap.classList.contains("input--disabled")) field.disabled = true;
+      if (wrap.classList.contains("input--readonly")) field.readOnly = true;
+      if (wrap.classList.contains("input--error")) field.setAttribute("aria-invalid", "true");
+      if (isNum) field.inputMode = "numeric";
+      value.replaceWith(field);
+    });
+
+    // ---- Textarea stubs: <div class="textarea-stub">…</div> -> <textarea>
+    root.querySelectorAll(".textarea-stub").forEach(stub => {
+      const ta = document.createElement("textarea");
+      ta.className = "textarea-stub" +
+        (stub.classList.contains("textarea-stub--error") ? " textarea-stub--error" : "");
+      if (stub.style.cssText) ta.style.cssText = stub.style.cssText;
+      ta.value = stub.textContent;
+      if (stub.classList.contains("textarea-stub--error")) ta.setAttribute("aria-invalid", "true");
+      stub.replaceWith(ta);
+    });
   }
 
   /* ---------- Combobox click behavior ----------

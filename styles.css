@@ -222,6 +222,39 @@
 .input__suffix { border-left: 1px dashed var(--line); margin-left: 8px; }
 .input__value { flex: 1; min-width: 0; }
 .input__value--num { font-variant-numeric: tabular-nums; text-align: right; font-family: var(--mono); }
+
+/* Real <input>/<textarea> embedded inside a .input/.textarea wrapper.
+ * The wrapper supplies the border/padding; the field itself is borderless
+ * and inherits typography from the wrapper. */
+.input > .input__field,
+.textarea > .input__field {
+  flex: 1; min-width: 0;
+  border: 0; outline: none; background: transparent;
+  font: inherit; color: inherit;
+  padding: 0; margin: 0;
+  min-height: 0;
+}
+.input > textarea.input__field,
+.textarea > textarea.input__field {
+  resize: vertical; min-height: 64px; line-height: 1.6;
+}
+.input__field--num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  font-family: var(--mono);
+}
+.input:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+.input--error:focus-within {
+  outline-color: var(--danger);
+}
+.input > .input__field:disabled,
+.input > .input__field[readonly] {
+  cursor: not-allowed;
+}
 .input__caret {
   display: inline-block; width: 1px; height: 14px; background: var(--ink);
   animation: blink 1s steps(2) infinite; margin-left: 2px;
@@ -930,17 +963,23 @@ kbd {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ====== TEXTAREA STUB ====== */
-.textarea-stub {
+textarea.textarea-stub, .textarea-stub {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   border: 1px solid var(--line);
   background: #fff;
   border-radius: 3px;
   padding: 8px 10px;
+  font-family: var(--sans);
   font-size: 13px;
   line-height: 1.5;
   white-space: pre-wrap;
   min-height: 64px;
   color: var(--ink);
+  resize: vertical;
 }
+textarea.textarea-stub:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
 .textarea-stub--error { border-color: var(--danger); background: #fff9f9; }
 
 /* ====== RICH RADIO / CHECK CARDS ====== */
