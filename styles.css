@@ -1366,7 +1366,7 @@ textarea.textarea-stub:focus { outline: 2px solid var(--accent); outline-offset:
   display: flex;
   flex-direction: column;
 }
-.modal-stub--danger { border-top: 3px solid var(--danger); }
+.modal-stub--danger { border-color: var(--danger); }
 .modal__head {
   display: flex; justify-content: space-between; align-items: center;
   padding: 12px 16px;
@@ -2011,7 +2011,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 1px; }
   max-width: 520px;
   box-shadow: var(--shadow-md);
 }
-.modal-stub--danger { border-top: 3px solid var(--danger); }
+.modal-stub--danger { border-color: var(--danger); }
 .modal-stub .modal__head {
   display: flex; align-items: center; justify-content: space-between;
   padding: 12px 16px;
