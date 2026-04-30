@@ -239,6 +239,7 @@ textarea.input {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 13px; color: var(--ink);
 }
+label.check, label.radio { cursor: pointer; }
 .check__box, .radio__dot {
   display: inline-flex; align-items: center; justify-content: center;
   width: 16px; height: 16px; border: 1px solid var(--ink-2);
@@ -246,28 +247,69 @@ textarea.input {
 }
 .check__box { border-radius: var(--r-sm); }
 .radio__dot { border-radius: 50%; }
+
+/* The native input is hidden; the wrapping <label> reflects its state. */
+.sgt-native {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip: rect(0 0 0 0); overflow: hidden;
+  white-space: nowrap;
+}
+
+.check:has(input:checked) .check__box,
 .check.checked .check__box {
   background: var(--accent); border-color: var(--accent); color: var(--paper);
   font-family: var(--mono); font-size: 11px;
 }
+.check:has(input:checked) .check__box::before,
 .check.checked .check__box::before { content: "✓"; }
+.check:has(input:indeterminate) .check__box::before { content: ""; }
+.check:has(input:indeterminate) .check__box {
+  background: var(--accent); border-color: var(--accent);
+}
+
+.radio:has(input:checked) .radio__dot::before,
 .radio.checked .radio__dot::before {
   content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
 }
+.radio:has(input:checked) .radio__dot,
 .radio.checked .radio__dot { border-color: var(--accent); }
 
-.toggle {
-  position: relative; display: inline-flex; align-items: center;
+/* Keyboard focus styles (visible only on tab/keyboard activation). */
+.check:has(input:focus-visible) .check__box,
+.radio:has(input:focus-visible) .radio__dot {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Toggle: rendered as a native <input type="checkbox" class="toggle">. */
+input[type="checkbox"].toggle {
+  -webkit-appearance: none; appearance: none;
+  position: relative; display: inline-block; vertical-align: middle;
   width: 36px; height: 20px; border-radius: 999px;
   border: 1px solid var(--line); background: var(--bg-2);
+  cursor: pointer; margin: 0; padding: 0;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
-.toggle::after {
+input[type="checkbox"].toggle::after {
   content: ""; position: absolute; left: 2px; top: 1px;
   width: 16px; height: 16px; border-radius: 50%;
   background: var(--paper); border: 1px solid var(--line);
+  box-sizing: border-box;
+  transition: left 0.15s ease, border-color 0.15s ease;
 }
-.toggle.on { background: var(--accent); border-color: var(--accent); }
-.toggle.on::after { left: auto; right: 2px; border-color: var(--accent); }
+input[type="checkbox"].toggle:checked {
+  background: var(--accent); border-color: var(--accent);
+}
+input[type="checkbox"].toggle:checked::after {
+  left: 18px; border-color: var(--accent);
+}
+input[type="checkbox"].toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 /* ---------- Status badge ---------- */
 .badge {
@@ -443,6 +485,15 @@ textarea.input {
 }
 .combo__results li.sel { background: var(--accent-soft); color: var(--accent); }
 .combo__code { font-family: var(--mono); color: var(--muted); font-size: 11px; }
+
+/* Combo open/closed state — driven by data-open set in build.js. */
+.combo > .input { cursor: pointer; }
+.combo > .input.input--disabled { cursor: not-allowed; }
+.combo[data-open="false"] > .combo__results { display: none; }
+.combo > .combo__results li:not(.combo__group):not(.combo__results__foot) { cursor: pointer; }
+.combo > .combo__results li:not(.combo__group):not(.combo__results__foot):hover {
+  background: var(--bg);
+}
 
 /* ---------- Tax summary ---------- */
 .tax { border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 14px; font-size: 12.5px; background: var(--bg); }
@@ -903,10 +954,20 @@ kbd {
   background: #fff;
   cursor: pointer;
 }
+.radio-rich:has(input:checked), .check-rich:has(input:checked),
 .radio-rich.checked, .check-rich.checked {
   border-color: var(--accent);
   background: #f4f8ff;
   box-shadow: inset 0 0 0 1px var(--accent);
+}
+.check-rich:has(input:checked) .check__box {
+  background: var(--accent); border-color: var(--accent); color: var(--paper);
+  font-family: var(--mono); font-size: 11px;
+}
+.check-rich:has(input:checked) .check__box::before { content: "✓"; }
+.radio-rich:has(input:checked) .radio__dot { border-color: var(--accent); }
+.radio-rich:has(input:checked) .radio__dot::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
 }
 .radio-rich strong, .check-rich strong { font-weight: 600; font-size: 13px; }
 .radio-rich .radio__dot, .check-rich .check__box { margin-top: 2px; flex-shrink: 0; }
