@@ -227,10 +227,16 @@
   font-size: 12px; min-width: 18px;
   color: var(--muted); padding: 0 6px; white-space: nowrap;
   font-family: inherit;
+  line-height: 1;
+  align-self: stretch;
+}
+.input__prefix .icon, .input__suffix .icon {
+  /* Drop any inherited inline offsets so the icon sits dead-center. */
+  vertical-align: middle; position: static;
 }
 .input__prefix.mono, .input__suffix.mono { font-family: var(--mono); }
-.input__prefix { border-right: 1px dashed var(--line); margin-right: 8px; }
-.input__suffix { border-left: 1px dashed var(--line); margin-left: 8px; }
+.input__prefix { border-right: 1px dashed var(--line); margin-right: 8px; padding-left: 0; }
+.input__suffix { border-left: 1px dashed var(--line); margin-left: 8px; padding-right: 0; }
 .input__value { flex: 1; min-width: 0; }
 .input__value--num { font-variant-numeric: tabular-nums; text-align: right; font-family: var(--mono); }
 
@@ -901,14 +907,24 @@ kbd {
 
 /* Shigoto UI — v4 styles: expanded variants, SVG icons, new components */
 
-/* ====== ICON BASE ====== */
+/* ====== ICON BASE ======
+ * SVGs always use viewBox="0 0 16 16". The host scales them to a fixed
+ * inline-block square; flex parents (buttons, prefixes, alerts…) center
+ * them via align-items, so vertical-align is set to middle for the rare
+ * inline-only contexts. */
 .icon {
   width: 14px; height: 14px;
   display: inline-block; flex-shrink: 0;
-  vertical-align: -2px;
+  vertical-align: middle;
+  /* Reset any default offsets that misalign the icon with adjacent text. */
+  position: relative; top: 0; left: 0;
+  overflow: visible;
 }
-.btn .icon { margin-right: 2px; }
-.btn--icon { padding: 6px; min-width: auto; min-height: 28px; }
+.btn .icon { margin: 0; }
+.btn--icon {
+  padding: 6px; min-width: 32px; min-height: 32px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
 .btn--icon .icon { margin: 0; }
 
 .search .icon { width: 14px; height: 14px; color: var(--muted); }
@@ -1308,15 +1324,22 @@ textarea.textarea-stub:focus { outline: 2px solid var(--accent); outline-offset:
 .alert {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 10px 14px;
+  gap: 12px;
+  padding: 12px 14px;
   border: 1px solid var(--line);
   border-left: 3px solid var(--muted);
   border-radius: 3px;
   background: #fff;
   font-size: 13px;
+  line-height: 1.55;
 }
-.alert > .icon { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; }
+.alert > .icon {
+  width: 18px; height: 18px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  position: static;
+  vertical-align: middle;
+}
 .alert > div { flex: 1; }
 .alert .btn { align-self: center; }
 .alert--info { border-left-color: var(--accent); background: #f4f8ff; }
