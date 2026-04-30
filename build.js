@@ -11,30 +11,81 @@
     }[c]));
   }
 
+  /* Generate basic stubs (HTML / Vanilla / React / Vue) from a card tag like
+   * "<sgt-money-input>". Used as a fallback for entries in usage.js that only
+   * have an HTML example so every card surfaces all four code panes.
+   */
+  function defaultUsage(rawTag) {
+    if (!rawTag) return null;
+    const tagText = String(rawTag).replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+    const m = tagText.match(/<sgt-([a-z0-9-]+)>/);
+    if (!m) return null;
+    const kebab = m[1];
+    const fullTag = "sgt-" + kebab;
+    const pascal = kebab.split("-").map(s => s[0].toUpperCase() + s.slice(1)).join("");
+    return {
+      html:
+        `<span class="k">&lt;${fullTag}&gt;&lt;/${fullTag}&gt;</span>`,
+      vanilla:
+        `<span class="k">import</span> <span class="s">'@shigoto-ui/elements/${kebab}'</span>;\n` +
+        `\n` +
+        `<span class="k">const</span> <span class="p">el</span> = <span class="p">document</span>.querySelector(<span class="s">'${fullTag}'</span>);\n` +
+        `<span class="p">el</span>.addEventListener(<span class="s">'sgt:change'</span>, (<span class="p">e</span>) =&gt; {\n` +
+        `  <span class="p">console</span>.log(<span class="p">e</span>.<span class="a">detail</span>);\n` +
+        `});`,
+      react:
+        `<span class="k">import</span> { <span class="p">${pascal}</span> } <span class="k">from</span> <span class="s">'@shigoto-ui/react'</span>;\n` +
+        `\n` +
+        `<span class="k">function</span> <span class="p">Example</span>() {\n` +
+        `  <span class="k">return</span> <span class="k">&lt;${pascal}</span> /<span class="k">&gt;</span>;\n` +
+        `}`,
+      vue:
+        `<span class="k">&lt;script setup&gt;</span>\n` +
+        `<span class="k">import</span> { <span class="p">${pascal}</span> } <span class="k">from</span> <span class="s">'@shigoto-ui/vue'</span>;\n` +
+        `<span class="k">&lt;/script&gt;</span>\n` +
+        `\n` +
+        `<span class="k">&lt;template&gt;</span>\n` +
+        `  <span class="k">&lt;${pascal}</span> /<span class="k">&gt;</span>\n` +
+        `<span class="k">&lt;/template&gt;</span>`
+    };
+  }
+
   function usageBlock(key) {
-    const u = (window.USAGE || {})[key];
-    if (!u) {
+    const written = (window.USAGE || {})[key] || {};
+    const card = (window.CARDS || {})[key];
+    const fallback = card ? defaultUsage(card.tag) : null;
+    const merged = {};
+    ["html", "vanilla", "react", "vue"].forEach(k => {
+      const code = written[k] || (fallback && fallback[k]);
+      if (code) merged[k] = code;
+    });
+    const order = ["html", "vanilla", "react", "vue"].filter(k => merged[k]);
+    if (order.length === 0) {
       return `<div class="usage usage--empty">
-        <p class="muted small">使用例は近日追加（HTML / Vanilla / React / Vue）</p>
+        <p class="muted small">使用例は近日追加</p>
       </div>`;
     }
-    const panes = ["html", "vanilla", "react", "vue"]
-      .filter(k => u[k])
-      .map((k, i) => {
-        const label = { html: "HTML", vanilla: "Vanilla JS", react: "React", vue: "Vue" }[k];
-        return {
-          tab: `<button class="usage__tab" role="tab" aria-selected="${i===0}" data-pane="${k}">${label}</button>`,
-          pane: `<pre class="usage__pane" data-pane="${k}"${i===0?' data-active="true"':''}>${u[k]}</pre>`
-        };
-      });
+    const LABEL = { html: "HTML", vanilla: "Vanilla JS", react: "React", vue: "Vue" };
+    const panes = order.map((k, i) => ({
+      key: k,
+      label: LABEL[k],
+      tab: `<button class="usage__tab" role="tab" aria-selected="${i===0}" data-pane="${k}">${LABEL[k]}</button>`,
+      pane: `<pre class="usage__pane" data-pane="${k}"${i===0?' data-active="true"':''}>${merged[k]}</pre>`
+    }));
     return `
-      <div class="usage" role="tablist" aria-label="使用例">
+      <div class="usage" role="tablist" aria-label="使用例" data-langs="${order.join(',')}">
         <div class="usage__tabs">${panes.map(p => p.tab).join("")}</div>
         <div class="usage__panes">${panes.map(p => p.pane).join("")}</div>
       </div>`;
   }
 
   function renderCard(key, c) {
+    const usage = usageBlock(key);
+    const langMatch = usage.match(/data-langs="([^"]+)"/);
+    const LABEL = { html: "HTML", vanilla: "Vanilla JS", react: "React", vue: "Vue" };
+    const summaryLabel = langMatch
+      ? `使用例（${langMatch[1].split(",").map(k => LABEL[k]).join(" / ")}）`
+      : "使用例（近日追加）";
     return `
       <article class="card" data-key="${key}">
         <header class="card__head">
@@ -47,8 +98,8 @@
         <div class="card__body">${c.body}</div>
         <p class="accept">${c.accept}</p>
         <details class="card__usage" open>
-          <summary>使用例（HTML / Vanilla / React / Vue）</summary>
-          ${usageBlock(key)}
+          <summary>${summaryLabel}</summary>
+          ${usage}
         </details>
       </article>`;
   }
