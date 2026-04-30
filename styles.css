@@ -133,15 +133,6 @@
   letter-spacing: 0.08em; padding: 4px 0;
 }
 .card > .accept { margin: 0 20px 20px; }
-.priority {
-  font-family: var(--mono); font-size: 10px;
-  letter-spacing: 0.08em; padding: 3px 8px;
-  border-radius: var(--r-sm); border: 1px solid var(--line);
-  align-self: start; white-space: nowrap;
-}
-.priority--must { background: var(--accent); color: var(--paper); border-color: var(--accent); }
-.priority--should { background: var(--bg-2); color: var(--ink); }
-.priority--could { background: transparent; color: var(--muted); border-style: dashed; }
 
 .card__body { padding: 20px; }
 

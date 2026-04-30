@@ -5,12 +5,6 @@
 (function () {
   "use strict";
 
-  const PRIORITY_LABEL = {
-    must:   { label: "MUST",   cls: "priority--must" },
-    should: { label: "SHOULD", cls: "priority--should" },
-    could:  { label: "COULD",  cls: "priority--could" }
-  };
-
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, c => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -41,7 +35,6 @@
   }
 
   function renderCard(key, c) {
-    const pr = PRIORITY_LABEL[c.priority] || PRIORITY_LABEL.should;
     return `
       <article class="card" data-key="${key}">
         <header class="card__head">
@@ -49,7 +42,6 @@
             <h3 class="card__title">${escapeHtml(c.name)}</h3>
             <code class="card__tag mono">${escapeHtml(c.tag)}</code>
           </div>
-          <span class="priority ${pr.cls}">${pr.label}</span>
         </header>
         <p class="card__desc">${c.desc}</p>
         <div class="card__body">${c.body}</div>
