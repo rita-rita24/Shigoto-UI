@@ -554,8 +554,24 @@ input[type="checkbox"].toggle:focus-visible {
 .timeline__note { color: var(--muted); }
 
 /* ---------- Master select / Combobox ---------- */
-.combo { border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--paper); padding: 4px; position: relative; }
-.combo__results { border-top: 1px dashed var(--line); padding: 4px 0; font-size: 12px; margin: 0; list-style: none; }
+.combo { position: relative; }
+.combo > .input,
+.combo > .search {
+  background: var(--paper);
+}
+/* Dropdown panel floats over surrounding content so opening it does not push
+ * cards below downward. */
+.combo__results {
+  position: absolute;
+  top: calc(100% + 4px); left: 0; right: 0;
+  z-index: 30;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+  max-height: 280px; overflow-y: auto;
+  padding: 4px 0; font-size: 12px; margin: 0; list-style: none;
+}
 .combo__results li {
   padding: 6px 8px;
   display: flex; justify-content: space-between; gap: 8px;
@@ -2866,6 +2882,13 @@ tr.sel.zebra { background: #e6efff; }
   .form-grid--4 {
     grid-template-columns: 1fr;
   }
+  /* Header-form rows (.hf): label is 200px on desktop; stack on tablet down. */
+  .hf { grid-template-columns: 1fr; gap: 4px; padding: 12px 0; }
+  .hf__label { padding-top: 0; }
+  .hf__ctrl.row { flex-wrap: wrap; }
+  /* Inline .input width hints inside .hf__ctrl can overflow; let them flex. */
+  .hf__ctrl > .input,
+  .hf__ctrl > .row > .input { min-width: 0; flex: 1 1 100%; max-width: 100%; }
   .confirm__row,
   .log__diff,
   .space-spec {

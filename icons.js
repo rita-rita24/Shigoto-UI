@@ -259,7 +259,7 @@ const ICON_GROUPS = [
   { id: "action",   label: "アクション",            names: ["search", "filter", "sort", "refresh", "edit", "trash", "copy", "save", "send", "share", "link", "attach", "download", "upload", "print"] },
   { id: "io",       label: "入出力・記号",          names: ["plus", "minus", "close", "check", "drag"] },
   { id: "status",   label: "ステータス",            names: ["warn", "info", "check-circle", "x-circle", "bell", "star", "bookmark", "bookmark-check", "bookmark-plus"] },
-  { id: "biz",      label: "業務アイテム",          names: ["yen", "calendar", "clock", "tag", "folder", "file", "credit-card", "database", "building", "globe"] },
+  { id: "biz",      label: "業務アイテム",          names: ["calendar", "clock", "tag", "folder", "file", "credit-card", "database", "building", "globe"] },
   { id: "people",   label: "ユーザ・コミュニケーション", names: ["user", "users", "mail", "phone", "chat"] },
   { id: "perm",     label: "設定・権限",            names: ["settings", "lock", "unlock", "eye", "eye-off"] },
   { id: "view",     label: "表示・分析",            names: ["table", "list", "chart", "trending-up"] },
@@ -285,7 +285,7 @@ const ICON_GROUPS = [
   { id: "view-ops", label: "ビュー操作",            names: ["maximize", "minimize", "focus", "scan-line"] },
   { id: "tools",    label: "制作ツール",            names: ["sliders", "ruler", "crop", "rotate-cw", "rotate-ccw", "magnet"] },
   { id: "label",    label: "フィルタ・ラベル",      names: ["filter-x", "tag-plus", "tag-x", "bookmark-x", "pin-off"] },
-  { id: "currency", label: "通貨",                  names: ["dollar", "euro", "pound", "bitcoin"] }
+  { id: "currency", label: "通貨",                  names: ["yen", "dollar", "euro", "pound", "bitcoin"] }
 ];
 
 window.ICON = ICON;
