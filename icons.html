@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Shigoto UI — アイコン</title>
-<meta name="description" content="Shigoto UI 標準のストロークアイコン。viewBox 16×16 / stroke-width 1.4 / round caps で統一。クリックでコードスニペットをコピー。" />
+<meta name="description" content="Shigoto UI 標準アイコン。Google Material Symbols Outlined を内製化（Apache 2.0）。クリックでコードスニペットをコピー。" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=15" />
+<link rel="stylesheet" href="styles.css?v=16" />
 </head>
 <body>
 
@@ -36,7 +36,7 @@
   <section class="icons-page__head">
     <h1 class="icons-page__title">アイコン</h1>
     <p class="icons-page__lede">
-      Shigoto UI 標準のストロークアイコン。<code class="mono">viewBox 16×16</code> ／ <code class="mono">stroke-width 1.4</code> ／ <code class="mono">stroke-linecap=round</code> で統一されており、<code class="mono">currentColor</code> を継承するため任意の色に染められます。カードをクリックすると <code class="mono">${'$'}{ICON.<i>name</i>}</code> 形式のスニペットがクリップボードにコピーされます。
+      Shigoto UI 標準アイコン。<strong>Google Material Symbols Outlined</strong>（Apache 2.0）の SVG を内製化しています。<code class="mono">viewBox 0 -960 960 960</code> ／ <code class="mono">fill=currentColor</code> で統一され、<code class="mono">color</code> を継承するため任意の色に染められます。カードをクリックすると <code class="mono">${'$'}{ICON.<i>name</i>}</code> 形式のスニペットがクリップボードにコピーされます。
     </p>
 
     <div class="icons-page__toolbar">
@@ -55,8 +55,8 @@
   </footer>
 </main>
 
-<script src="icons.js?v=15"></script>
-<script src="build.js?v=15"></script>
+<script src="icons.js?v=16"></script>
+<script src="build.js?v=16"></script>
 <script>
   // After build.js renders the grid, replace any [data-icon] placeholders in
   // the header/toolbar (search icon) with real SVG markup, and write the
