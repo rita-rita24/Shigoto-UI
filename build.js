@@ -127,9 +127,11 @@
       if (isChecked && !isMixed) input.checked = true;
       if (isDisabled) input.disabled = true;
       while (span.firstChild) label.appendChild(span.firstChild);
-      // CSS draws the check/dash glyph; clear any pre-baked icon markup.
+      // CSS draws the check / dash glyph via ::before; clear any pre-baked
+      // icon markup (literal "−", inline SVG, .check__dash placeholder, etc.)
+      // for both checked and indeterminate states.
       const box = label.querySelector(".check__box");
-      if (box && !isMixed) box.innerHTML = "";
+      if (box) box.innerHTML = "";
       label.insertBefore(input, label.firstChild);
       span.replaceWith(label);
       if (isMixed) {
